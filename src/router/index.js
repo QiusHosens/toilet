@@ -71,9 +71,21 @@ export const constantRoutes = [
     hidden: true
   },
   {
-    path: '/',
+      path: '/',
+      component: Layout,
+      redirect: '/home',
+      children: [
+          {
+              path: 'home',
+              component: () => import('@/views/home/index'),
+              name: 'Home',
+              meta: { title: 'Home', icon: 'dashboard', affix: true }
+          }
+      ]
+  },
+  {
+    path: '/dashboard',
     component: Layout,
-    redirect: '/dashboard',
     children: [
       {
         path: 'dashboard',
