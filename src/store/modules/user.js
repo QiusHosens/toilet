@@ -34,9 +34,14 @@ const actions = {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
-        const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
+        // const { data } = response
+        // commit('SET_TOKEN', data.token)
+        // setToken(data.token)
+
+        const token = response.accessToken;
+        commit('SET_TOKEN', token)
+        commit('SET_NAME', username.trim())
+        setToken(token)
         resolve()
       }).catch(error => {
         reject(error)
@@ -47,25 +52,42 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
-        const { data } = response
+      getInfo(state.name).then(response => {
+        // const { data } = response
+        //
+        // if (!data) {
+        //   reject('Verification failed, please Login again.')
+        // }
+        //
+        // const { roles, name, avatar, introduction } = data
+        //
+        // // roles must be a non-empty array
+        // if (!roles || roles.length <= 0) {
+        //   reject('getInfo: roles must be a non-null array!')
+        // }
+        //
+        // commit('SET_ROLES', roles)
+        // commit('SET_NAME', name)
+        // commit('SET_AVATAR', avatar)
+        // commit('SET_INTRODUCTION', introduction)
+        // resolve(data)
 
+        const data = response
         if (!data) {
-          reject('Verification failed, please Login again.')
+          reject('验证失败,请重新登陆')
         }
+        commit('SET_ROLES', ['admin'])
+        // commit('SET_NAME', name)
+        commit('SET_AVATAR', data.headImgUrl)
+        commit('SET_INTRODUCTION', '1')
 
-        const { roles, name, avatar, introduction } = data
-
-        // roles must be a non-empty array
-        if (!roles || roles.length <= 0) {
-          reject('getInfo: roles must be a non-null array!')
-        }
-
-        commit('SET_ROLES', roles)
-        commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
-        commit('SET_INTRODUCTION', introduction)
-        resolve(data)
+        const resolveData = {
+          roles: ['admin'],
+          introduction: '1',
+          avatar: data.headImgUrl,
+          name: state.name
+        };
+        resolve(resolveData)
       }).catch(error => {
         reject(error)
       })
@@ -104,6 +126,7 @@ const actions = {
 
   // dynamically modify permissions
   async changeRoles({ commit, dispatch }, role) {
+    debugger
     const token = role + '-token'
 
     commit('SET_TOKEN', token)

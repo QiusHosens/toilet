@@ -27,7 +27,7 @@ export default {
   /* 50= navbar  50  */
   min-height: calc(100vh - 50px);
   width: 100%;
-  height: 100%;
+  height: calc(100% - 50px);
   position: relative;
   overflow: hidden;
 }
@@ -40,6 +40,7 @@ export default {
   .app-main {
     /* 84 = navbar + tags-view = 50 + 34 */
     min-height: calc(100vh - 84px);
+    height: calc(100% - 84px);
   }
 
   .fixed-header+.app-main {

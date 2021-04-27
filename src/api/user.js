@@ -1,24 +1,114 @@
 import request from '@/utils/request'
 
+// export function login(data) {
+//   return request({
+//     url: '/vue-element-admin/user/login',
+//     method: 'post',
+//     data
+//   })
+// }
+//
+// export function getInfo(token) {
+//   return request({
+//     url: '/vue-element-admin/user/info',
+//     method: 'get',
+//     params: { token }
+//   })
+// }
+//
+// export function logout() {
+//   return request({
+//     url: '/vue-element-admin/user/logout',
+//     method: 'post'
+//   })
+// }
+
 export function login(data) {
   return request({
-    url: '/vue-element-admin/user/login',
+    url: '/Api/User/Login',
     method: 'post',
-    data
+    params: {
+      userName: data.username,
+      pwd: data.password
+    }
   })
 }
 
-export function getInfo(token) {
+export function getInfo(userName) {
   return request({
-    url: '/vue-element-admin/user/info',
+    url: '/Api/User/GetLoginInfo',
     method: 'get',
-    params: { token }
+    params: { userName }
   })
 }
 
 export function logout() {
+  // return request({
+  //   url: '/vue-element-admin/user/logout',
+  //   method: 'post'
+  // })
+}
+
+export function changePwd(userName, oldPwd, newPwd) {
   return request({
-    url: '/vue-element-admin/user/logout',
-    method: 'post'
+    url: '/Api/User/ChangePwd',
+    method: 'post',
+    params: { userName, oldPwd, newPwd }
+  })
+}
+
+export function deleteUser(userId) {
+  return request({
+    url: '/Api/User/DeleteUser',
+    method: 'post',
+    params: { userId }
+  })
+}
+
+export function existUser(userName) {
+  return request({
+    url: '/Api/User/Exsit',
+    method: 'post',
+    params: { userName }
+  })
+}
+
+export function addUser(user) {
+  return request({
+    url: '/Api/User/AddUser',
+    method: 'post',
+    params: user
+  })
+}
+
+export function updateUser(user) {
+  return request({
+    url: '/Api/User/UpdateUser',
+    method: 'post',
+    params: user
+  })
+}
+
+export function pageUsers(pageSize, pageIndex, orderByField, orderBy, userName, distCode) {
+  return request({
+    url: '/Api/User/GetUsers',
+    method: 'post',
+    params: { pageSize, pageIndex, orderByField, orderBy, userName, distCode }
+  })
+}
+
+export function setUserPower(userName, powers) {
+  return request({
+    url: '/Api/User/SetUserPowers',
+    method: 'post',
+    params: { userName, powers }
+  })
+}
+
+export function getUserPower(userName) {
+  return request({
+    url: '/Api/User/GetUserPowers',
+    method: 'get',
+    params: { userName }
   })
 }

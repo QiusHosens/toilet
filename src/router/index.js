@@ -84,6 +84,18 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/group',
+    component: Layout,
+    children: [
+      {
+        path: 'group',
+        component: () => import('@/views/dist/index'),
+        name: '客户管理',
+        meta: { title: '客户管理', icon: 'group', affix: false }
+      }
+    ]
+  },
+  {
     path: '/controlCenter',
     component: Layout,
     hidden: true,
@@ -99,10 +111,18 @@ export const constantRoutes = [
   {
     path: '/user',
     component: Layout,
+    name: '人员管理',
+    meta: { title: '人员管理', icon: 'peoples', affix: false },
     children: [
       {
-        path: 'user',
-        component: () => import('@/views/user/index'),
+        path: 'group',
+        component: () => import('@/views/user/group'),
+        name: '分组管理',
+        meta: { title: '分组管理', icon: 'peoples', affix: false }
+      },
+      {
+        path: 'people',
+        component: () => import('@/views/user/user'),
         name: '用户管理',
         meta: { title: '用户管理', icon: 'peoples', affix: false }
       }
