@@ -118,13 +118,13 @@ export const constantRoutes = [
         path: 'group',
         component: () => import('@/views/user/group'),
         name: '分组管理',
-        meta: { title: '分组管理', icon: 'peoples', affix: false }
+        meta: { title: '分组管理', icon: 'groups', affix: false }
       },
       {
         path: 'people',
         component: () => import('@/views/user/user'),
         name: '用户管理',
-        meta: { title: '用户管理', icon: 'peoples', affix: false }
+        meta: { title: '用户管理', icon: 'singleUser', affix: false }
       }
     ]
   },
