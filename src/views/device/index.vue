@@ -256,7 +256,7 @@
 </template>
 
 <script>
-  import { addToilet, deleteToilet, existToilet, updateToilet, pageToilets } from '@/api/toilet'
+  import { addToilet, deleteToilet, existToilet, updateToilet, pageToilets } from '@/api/toilet';
 
   export default {
     name: "Device",

@@ -5,7 +5,6 @@
             <div class="row-left">
                 <el-button type="primary" size="small" @click="clickAddUser()">新增人员</el-button>
                 <el-button type="primary" size="small" @click="clickImportUser()">导入人员</el-button>
-                <el-button type="primary" size="small" @click="clickBindToilet()">绑定公厕</el-button>
                 <el-button type="danger" size="small" @click="clickDelUser()">删除人员</el-button>
             </div>
             <div class="row-right">
@@ -108,10 +107,11 @@
                         header-align="center"
                         fixed="right"
                         label="操作"
-                        width="120">
+                        width="160">
                     <template slot-scope="scope">
                         <el-button @click="viewUser(scope.row)" type="text" size="small">查看</el-button>
                         <el-button @click="clickUpdateUser(scope.row)" type="text" size="small">编辑</el-button>
+                        <el-button @click="clickBindToilet(scope.row)" type="text" size="small">绑定</el-button>
                         <el-button @click="clickDeleteUser(scope.row)" type="text" size="small">删除</el-button>
                     </template>
                 </el-table-column>
@@ -132,22 +132,22 @@
         <el-dialog :title="modalTitle" :visible.sync="modalShow" center width="1000px">
             <el-form :model="form">
                 <el-form-item class="item-no-width" label="人员名" :label-width="formLabelWidth">
-                    <el-input v-model="form.userName" autocomplete="off"></el-input>
+                    <el-input class="modal-input" v-model="form.userName" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item class="item-no-width" label="人员类型" :label-width="formLabelWidth">
-                    <el-input v-model="form.userType" autocomplete="off"></el-input>
+                    <el-input class="modal-input" v-model="form.userType" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item class="item-no-width" label="分销商编码" :label-width="formLabelWidth">
-                    <el-input v-model="form.distCode" autocomplete="off"></el-input>
+                    <el-input class="modal-input" v-model="form.distCode" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item class="item-no-width" label="人员真名" :label-width="formLabelWidth">
-                    <el-input v-model="form.realName" autocomplete="off"></el-input>
+                    <el-input class="modal-input" v-model="form.realName" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item class="item-no-width" label="职责" :label-width="formLabelWidth">
-                    <el-input v-model="form.duty" autocomplete="off"></el-input>
+                    <el-input class="modal-input" v-model="form.duty" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item class="item-no-width" label="性别" :label-width="formLabelWidth">
-                    <el-select v-model="value" placeholder="请选择">
+                    <el-select class="modal-input" v-model="value" placeholder="请选择">
                         <el-option
                                 v-for="item in sexs"
                                 :key="item.value"
@@ -157,10 +157,10 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item class="item-no-width" label="联系电话" :label-width="formLabelWidth">
-                    <el-input v-model="form.contactTel" autocomplete="off"></el-input>
+                    <el-input class="modal-input" v-model="form.contactTel" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item class="item-no-width" label="邮箱地址" :label-width="formLabelWidth">
-                    <el-input v-model="form.emall" autocomplete="off"></el-input>
+                    <el-input class="modal-input" v-model="form.emall" autocomplete="off"></el-input>
                 </el-form-item>
                 <div class="item-avatar">
                     <el-upload
@@ -212,11 +212,27 @@
                 </div>
             </el-form>
         </el-dialog>
+
+        <!-- bind toilet -->
+        <el-dialog :title="bindModalTitle" :visible.sync="bindModalShow" center width="1000px">
+            <el-transfer
+                    filterable
+                    :filter-method="filterMethod"
+                    filter-placeholder="请输入公厕名"
+                    v-model="userToilets"
+                    :data="toilets">
+            </el-transfer>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="bindModalShow = false">取 消</el-button>
+                <el-button type="primary" @click="saveBind()">确 定</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
 <script>
-  import { addUser, deleteUser, existUser, updateUser, pageUsers } from '@/api/user'
+  import { addUser, deleteUser, existUser, updateUser, pageUsers, getUserPower, setUserPower } from '@/api/user';
+  import { pageToilets } from '@/api/toilet';
 
   export default {
     name: "User",
@@ -226,6 +242,8 @@
         viewModalShow: false,
         modalTitle: '新增人员',
         modalShow: false,
+        bindModalTitle: '绑定公厕',
+        bindModalShow: false,
         formLabelWidth: '120px',
         sexs: [{
           value: '0',
@@ -273,7 +291,14 @@
 
         saveType: '',
 
-        imageUrl: ''
+        imageUrl: '',
+
+        toilets: [],
+        toiletPage: 0,
+        userToilets: [],
+        filterMethod(query, item) {
+          return item.label.indexOf(query) > -1;
+        }
       }
     },
     mounted() {
@@ -322,6 +347,17 @@
           this.modalShow = false;
         }
       },
+      saveBind() {
+        let powers = [];
+        this.userToilets.forEach(userToilet => {
+          powers.push({
+            toiletCode: userToilet.key
+          });
+        });
+        setUserPower(this.form.userName, powers).then(res => {
+          this.bindModalShow = false;
+        });
+      },
       search() {
         this.pageUser();
       },
@@ -331,14 +367,46 @@
           this.totalPage = res.totalPage;
         })
       },
-      clickBindToilet() {
+      clickBindToilet(user) {
+        this.form = user;
+        this.pageToilet(() => {
+          this.bindModalShow = true;
+        });
+        this.getUserToilets(user);
+      },
+      getUserToilets(user) {
+        getUserPower(user.userName).then(res => {
+          this.userToilets = [];
+          res.forEach(userToilet => {
+            this.userToilets.push({
+              label: userToilet.toiletCode,
+              key: userToilet.toiletCode,
+            })
+          });
+        });
+      },
+      pageToilet(callback) {
+        pageToilets(this.pageSize, this.pageIndex, '', '', '').then(res => {
+          this.toilets = [];
+          res.pageData.forEach(toilet => {
+            this.toilets.push({
+              label: toilet.toiletName,
+              key: toilet.toiletCode,
+            })
+          });
+          this.toiletPage = res.totalPage;
 
+          if (callback) {
+            callback();
+          }
+        })
       },
       handleSizeChange(pageSize) {
         this.pageSize = pageSize;
       },
       handleCurrentChange(pageIndex) {
         this.pageIndex = pageIndex;
+        this.pageToilet();
       },
 
       handleAvatarSuccess(res, file) {
@@ -365,8 +433,8 @@
         padding: 20px;
     }
 
-    /deep/ .el-input {
-        width: 300px;
+    .modal-input {
+        width: 240px;
     }
 
     /deep/ .el-form-item {
@@ -399,10 +467,6 @@
         margin-bottom: 22px;
         width: unset;
         float: left;
-    }
-
-    /deep/ .el-input {
-        width: 240px;
     }
 
     .row-div {

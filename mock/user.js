@@ -276,7 +276,7 @@ module.exports = [
   },
   {
     url: '/Api/User/GetUserPowers',
-    type: 'post',
+    type: 'get',
     response: userName => {
       return responseUserAuth;
     }
