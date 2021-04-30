@@ -179,6 +179,7 @@
                 </el-form-item>
                 <el-form-item label="公厕星级" :label-width="formLabelWidth">
                     <el-rate
+
                             v-model="form.toiletStar"
                             :colors="['#99A9BF', '#F7BA2A', '#FF9900']">
                     </el-rate>
@@ -210,6 +211,47 @@
                 <el-button type="primary" @click="save()">确 定</el-button>
             </div>
         </el-dialog>
+
+        <!-- view model -->
+        <el-dialog :title="viewModalTitle" :visible.sync="viewModalShow" center width="1000px">
+            <el-form class="view-form" :model="form">
+                <el-form-item label="公厕名称" :label-width="formLabelWidth">
+                    {{ form.toiletName }}
+                </el-form-item>
+                <el-form-item label="公厕地址" :label-width="formLabelWidth">
+                    {{ form.toiletAdr }}
+                </el-form-item>
+                <el-form-item label="公厕电话" :label-width="formLabelWidth">
+                    {{ form.toiletTel }}
+                </el-form-item>
+                <el-form-item label="公厕星级" :label-width="formLabelWidth">
+                    <el-rate
+                            disabled
+                            :max="form.toiletStar"
+                            v-model="form.toiletStar"
+                            :colors="['#99A9BF', '#F7BA2A', '#FF9900']">
+                    </el-rate>
+                </el-form-item>
+                <el-form-item label="分销商编码" :label-width="formLabelWidth">
+                    {{ form.distCode }}
+                </el-form-item>
+                <el-form-item label="分组编码" :label-width="formLabelWidth">
+                    {{ form.groupCode }}
+                </el-form-item>
+                <el-form-item label="位置(经度/纬度)" :label-width="formLabelWidth">
+                    {{ form.longitude }}, {{ form.latitude }}
+                </el-form-item>
+                <el-form-item label="蹲位数量(男/女/其他)" :label-width="formLabelWidth">
+                    {{ form.numSeatMan }}/{{ form.numSeatFemale }}/{{ form.numSeatThird }}
+                </el-form-item>
+                <el-form-item label="计划地址" :label-width="formLabelWidth">
+                    {{ form.planUrl }}
+                </el-form-item>
+                <el-form-item label="备注" :label-width="formLabelWidth">
+                    {{ form.memo }}
+                </el-form-item>
+            </el-form>
+        </el-dialog>
     </div>
 </template>
 
@@ -220,6 +262,8 @@
     name: "Device",
     data() {
       return {
+        viewModalTitle: '公厕信息',
+        viewModalShow: false,
         modalTitle: '新增公厕',
         modalShow: false,
         formLabelWidth: '150px',
@@ -284,17 +328,18 @@
       clickDelToilet() {
 
       },
-      viewToilet(dist) {
-        console.log(dist)
+      viewToilet(toilet) {
+        this.form = toilet;
+        this.viewModalShow = true;
       },
-      clickUpdateToilet(dist) {
+      clickUpdateToilet(toilet) {
         this.modalTitle = '编辑公厕';
-        this.form = dist;
+        this.form = toilet;
         this.saveType = 'update';
         this.modalShow = true;
       },
-      clickDeleteToilet(dist) {
-        deleteToilet(dist.distId).then(res => {
+      clickDeleteToilet(toilet) {
+        deleteToilet(toilet.toiletId).then(res => {
           // 刷新分页
           this.pageToilet();
         });
@@ -409,5 +454,9 @@
 
     .seat-input-right {
         margin-left: 21px;
+    }
+
+    .view-form {
+        display: inline-block;
     }
 </style>

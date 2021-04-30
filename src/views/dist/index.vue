@@ -28,14 +28,6 @@
                         fixed
                         align="center"
                         header-align="center"
-                        prop="distId"
-                        label="分销商ID"
-                        width="100">
-                </el-table-column>
-                <el-table-column
-                        fixed
-                        align="center"
-                        header-align="center"
                         prop="distCode"
                         label="分销商编码"
                         width="300">
@@ -93,13 +85,6 @@
                 <el-table-column
                         align="center"
                         header-align="center"
-                        prop="crtDate"
-                        label="创建日期"
-                        width="100">
-                </el-table-column>
-                <el-table-column
-                        align="center"
-                        header-align="center"
                         prop="memo"
                         label="备注"
                         width="100">
@@ -129,12 +114,9 @@
             </el-pagination>
         </div>
 
-        <!-- modal -->
+        <!-- add/edit modal -->
         <el-dialog :title="modalTitle" :visible.sync="modalShow" center width="1000px">
             <el-form :model="form">
-                <el-form-item label="分销商编码" :label-width="formLabelWidth">
-                    <el-input v-model="form.distCode" autocomplete="off"></el-input>
-                </el-form-item>
                 <el-form-item label="分销商名" :label-width="formLabelWidth">
                     <el-input v-model="form.distSName" autocomplete="off"></el-input>
                 </el-form-item>
@@ -156,16 +138,48 @@
                 <el-form-item label="邮箱地址" :label-width="formLabelWidth">
                     <el-input v-model="form.contactEmail" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="创建日期" :label-width="formLabelWidth">
-                    <el-date-picker
-                            v-model="form.crtDate"
-                            type="date"
-                            value-format="timestamp"
-                            placeholder="选择日期">
-                    </el-date-picker>
-                </el-form-item>
                 <el-form-item label="备注" :label-width="formLabelWidth">
                     <el-input v-model="form.memo" autocomplete="off"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="modalShow = false">取 消</el-button>
+                <el-button type="primary" @click="save()">确 定</el-button>
+            </div>
+        </el-dialog>
+
+        <!-- view model -->
+        <el-dialog :title="viewModalTitle" :visible.sync="viewModalShow" center width="1000px">
+            <el-form class="view-form" :model="form">
+                <el-form-item label="分销商编码" :label-width="formLabelWidth">
+                    {{ form.distCode }}
+                </el-form-item>
+                <el-form-item label="分销商名" :label-width="formLabelWidth">
+                    {{ form.distSName }}
+                </el-form-item>
+                <el-form-item label="分销商全名" :label-width="formLabelWidth">
+                    {{ form.distFName }}
+                </el-form-item>
+                <el-form-item label="父级分销商编码" :label-width="formLabelWidth">
+                    {{ form.supDistCode }}
+                </el-form-item>
+                <el-form-item label="联系地址" :label-width="formLabelWidth">
+                    {{ form.contactAdr }}
+                </el-form-item>
+                <el-form-item label="联系人" :label-width="formLabelWidth">
+                    {{ form.contactPerson }}
+                </el-form-item>
+                <el-form-item label="联系电话" :label-width="formLabelWidth">
+                    {{ form.contactTel }}
+                </el-form-item>
+                <el-form-item label="邮箱地址" :label-width="formLabelWidth">
+                    {{ form.contactEmail }}
+                </el-form-item>
+                <el-form-item label="创建日期" :label-width="formLabelWidth">
+                    {{ form.crtDate }}
+                </el-form-item>
+                <el-form-item label="备注" :label-width="formLabelWidth">
+                    {{ form.memo }}
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -183,6 +197,8 @@
     name: "Dist",
     data() {
       return {
+        viewModalTitle: '客户信息',
+        viewModalShow: false,
         modalTitle: '新增客户',
         modalShow: false,
         formLabelWidth: '120px',
@@ -242,7 +258,8 @@
 
       },
       viewDist(dist) {
-        console.log(dist)
+        this.form = dist;
+        this.viewModalShow = true;
       },
       clickUpdateDist(dist) {
         this.modalTitle = '编辑客户';
@@ -344,5 +361,9 @@
 
     .search-button {
         margin-left: 20px;
+    }
+
+    .view-form {
+        display: inline-block;
     }
 </style>

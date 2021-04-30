@@ -72,7 +72,7 @@
                         label="性别"
                         width="100">
                     <template slot-scope="scope">
-                        {{ sexs[scope.row.sex].label }}
+                        {{ scope.row.sex == '1' ? '女' : '男' }}
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -128,25 +128,25 @@
             </el-pagination>
         </div>
 
-        <!-- modal -->
+        <!-- add/edit modal -->
         <el-dialog :title="modalTitle" :visible.sync="modalShow" center width="1000px">
             <el-form :model="form">
-                <el-form-item label="人员名" :label-width="formLabelWidth">
+                <el-form-item class="item-no-width" label="人员名" :label-width="formLabelWidth">
                     <el-input v-model="form.userName" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="人员类型" :label-width="formLabelWidth">
+                <el-form-item class="item-no-width" label="人员类型" :label-width="formLabelWidth">
                     <el-input v-model="form.userType" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="分销商编码" :label-width="formLabelWidth">
+                <el-form-item class="item-no-width" label="分销商编码" :label-width="formLabelWidth">
                     <el-input v-model="form.distCode" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="人员真名" :label-width="formLabelWidth">
+                <el-form-item class="item-no-width" label="人员真名" :label-width="formLabelWidth">
                     <el-input v-model="form.realName" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="职责" :label-width="formLabelWidth">
+                <el-form-item class="item-no-width" label="职责" :label-width="formLabelWidth">
                     <el-input v-model="form.duty" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="性别" :label-width="formLabelWidth">
+                <el-form-item class="item-no-width" label="性别" :label-width="formLabelWidth">
                     <el-select v-model="value" placeholder="请选择">
                         <el-option
                                 v-for="item in sexs"
@@ -156,10 +156,10 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="联系电话" :label-width="formLabelWidth">
+                <el-form-item class="item-no-width" label="联系电话" :label-width="formLabelWidth">
                     <el-input v-model="form.contactTel" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="邮箱地址" :label-width="formLabelWidth">
+                <el-form-item class="item-no-width" label="邮箱地址" :label-width="formLabelWidth">
                     <el-input v-model="form.emall" autocomplete="off"></el-input>
                 </el-form-item>
                 <div class="item-avatar">
@@ -179,6 +179,39 @@
                 <el-button type="primary" @click="save()">确 定</el-button>
             </div>
         </el-dialog>
+
+        <!-- view model -->
+        <el-dialog :title="viewModalTitle" :visible.sync="viewModalShow" center width="1000px">
+            <el-form class="view-form" :model="form">
+                <el-form-item label="人员名" :label-width="formLabelWidth">
+                    {{ form.userName }}
+                </el-form-item>
+                <el-form-item label="人员类型" :label-width="formLabelWidth">
+                    {{ form.userType }}
+                </el-form-item>
+                <el-form-item label="分销商编码" :label-width="formLabelWidth">
+                    {{ form.distCode }}
+                </el-form-item>
+                <el-form-item label="人员真名" :label-width="formLabelWidth">
+                    {{ form.realName }}
+                </el-form-item>
+                <el-form-item label="职责" :label-width="formLabelWidth">
+                    {{ form.duty }}
+                </el-form-item>
+                <el-form-item label="性别" :label-width="formLabelWidth">
+                    {{ form.sex == '1' ? '女' : '男' }}
+                </el-form-item>
+                <el-form-item label="联系电话" :label-width="formLabelWidth">
+                    {{ form.contactTel }}
+                </el-form-item>
+                <el-form-item label="邮箱地址" :label-width="formLabelWidth">
+                    {{ form.emall }}
+                </el-form-item>
+                <div class="item-avatar">
+                    <img v-if="form.imageUrl" :src="form.imageUrl" class="avatar">
+                </div>
+            </el-form>
+        </el-dialog>
     </div>
 </template>
 
@@ -189,6 +222,8 @@
     name: "User",
     data() {
       return {
+        viewModalTitle: '人员信息',
+        viewModalShow: false,
         modalTitle: '新增人员',
         modalShow: false,
         formLabelWidth: '120px',
@@ -257,17 +292,18 @@
       clickDelUser() {
 
       },
-      viewUser(dist) {
-        console.log(dist)
+      viewUser(user) {
+        this.form = user;
+        this.viewModalShow = true;
       },
-      clickUpdateUser(dist) {
+      clickUpdateUser(user) {
         this.modalTitle = '编辑人员';
-        this.form = dist;
+        this.form = user;
         this.saveType = 'update';
         this.modalShow = true;
       },
-      clickDeleteUser(dist) {
-        deleteUser(dist.distId).then(res => {
+      clickDeleteUser(user) {
+        deleteUser(user.userId).then(res => {
           // 刷新分页
           this.pageUser();
         });
@@ -359,7 +395,7 @@
         position: relative;
     }
 
-    /deep/ .el-form-item {
+    .item-no-width {
         margin-bottom: 22px;
         width: unset;
         float: left;
@@ -424,5 +460,13 @@
         position: absolute;
         right: 20px;
         top: 25px;
+    }
+
+    .view-form {
+        display: inline-block;
+    }
+
+    /deep/ .el-dialog__body {
+        display: inline-block;
     }
 </style>

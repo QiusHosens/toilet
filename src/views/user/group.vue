@@ -76,7 +76,7 @@
             </el-pagination>
         </div>
 
-        <!-- modal -->
+        <!-- add/edit modal -->
         <el-dialog :title="modalTitle" :visible.sync="modalShow" center width="1000px">
             <el-form :model="form">
                 <el-form-item label="分组编码" :label-width="formLabelWidth">
@@ -97,6 +97,24 @@
                 <el-button type="primary" @click="save()">确 定</el-button>
             </div>
         </el-dialog>
+
+        <!-- view model -->
+        <el-dialog :title="viewModalTitle" :visible.sync="viewModalShow" center width="1000px">
+            <el-form class="view-form" :model="form">
+                <el-form-item label="分组编码" :label-width="formLabelWidth">
+                    {{ form.groupCode }}
+                </el-form-item>
+                <el-form-item label="分组名称" :label-width="formLabelWidth">
+                    {{ form.groupName }}
+                </el-form-item>
+                <el-form-item label="分销商编码" :label-width="formLabelWidth">
+                    {{ form.distCode }}
+                </el-form-item>
+                <el-form-item label="备注" :label-width="formLabelWidth">
+                    {{ form.memo }}
+                </el-form-item>
+            </el-form>
+        </el-dialog>
     </div>
 </template>
 
@@ -107,6 +125,8 @@
     name: "Group",
     data() {
       return {
+        viewModalTitle: '分组信息',
+        viewModalShow: false,
         modalTitle: '新增分组',
         modalShow: false,
         formLabelWidth: '120px',
@@ -152,17 +172,18 @@
       clickDelGroup() {
 
       },
-      viewGroup(dist) {
-        console.log(dist)
+      viewGroup(group) {
+        this.form = group;
+        this.viewModalShow = true;
       },
-      clickUpdateGroup(dist) {
+      clickUpdateGroup(group) {
         this.modalTitle = '编辑分组';
-        this.form = dist;
+        this.form = group;
         this.saveType = 'update';
         this.modalShow = true;
       },
-      clickDeleteGroup(dist) {
-        deleteGroup(dist.distId).then(res => {
+      clickDeleteGroup(group) {
+        deleteGroup(group.groupId).then(res => {
           // 刷新分页
           this.pageGroup();
         });
@@ -255,5 +276,9 @@
 
     .search-button {
         margin-left: 20px;
+    }
+
+    .view-form {
+        display: inline-block;
     }
 </style>
