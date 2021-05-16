@@ -8,6 +8,7 @@ const search = require('./remote-search')
 const dist = require('./dist')
 const group = require('./group')
 const toilet = require('./toilet')
+const report = require('./report')
 
 const mocks = [
   ...user,
@@ -16,7 +17,8 @@ const mocks = [
   ...search,
   ...dist,
   ...group,
-  ...toilet
+  ...toilet,
+  ...report
 ]
 
 // for front mock

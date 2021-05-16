@@ -39,3 +39,10 @@ export function pageToilets(pageSize, pageIndex, orderByField, orderBy) {
     params: { pageSize, pageIndex, orderByField, orderBy }
   })
 }
+
+export function allToilets(pageSize, pageIndex, orderByField, orderBy) {
+  return request({
+    url: '/Api/Toilet/GetAllToilets',
+    method: 'get'
+  })
+}

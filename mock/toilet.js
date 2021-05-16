@@ -63,6 +63,16 @@ const responsePageToilet = {
   }, "errcode": 0, "errmsg": "获取厕所列表成功！", "success": true
 }
 
+// 查询所有厕所
+const responseAllToilets = {  
+  "data": [    
+    {      
+      "toiletCode": "7dd51528-6cee-47b5-b604-bdd893266f68",      
+      "toiletName": "天府三街1#厕所"    
+    }
+  ],  "errcode": 0,  "errmsg": "获取厕所列表成功！",  "success": true
+}
+
 module.exports = [
   {
     url: '/Api/Toilet/AddToilet',
@@ -97,6 +107,13 @@ module.exports = [
     type: 'post',
     response: params => {
       return responsePageToilet;
+    }
+  }, 
+  {
+    url: '/Api/Toilet/GetAllToilets',
+    type: 'get',
+    response: params => {
+      return responseAllToilets;
     }
   }
 ]
