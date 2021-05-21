@@ -31,7 +31,7 @@
                     clearable
                     filterable
                     style="margin-left: 20px;"
-                    placeholder="请选择"
+                    placeholder="请选择厕所"
                     @change="selectedChange()">
                     <el-option
                         v-for="item in toilets"

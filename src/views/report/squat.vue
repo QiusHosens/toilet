@@ -29,7 +29,7 @@
                     multiple
                     collapse-tags
                     style="margin-left: 20px;"
-                    placeholder="请选择">
+                    placeholder="请选择厕所">
                     <el-option
                         v-for="item in toilets"
                         :key="item.toiletCode"

@@ -1,6 +1,7 @@
 <template>
     <div class="air-container">
         <div class="condition">
+            日期:
             <el-date-picker
                 class="date-from"
                 size="small"
@@ -16,7 +17,7 @@
                     clearable
                     filterable
                     style="margin-left: 20px;"
-                    placeholder="请选择">
+                    placeholder="请选择厕所">
                     <el-option
                         v-for="item in toilets"
                         :key="item.toiletCode"
@@ -655,6 +656,10 @@
 
     .condition {
         height: 36px;
+    }
+
+    .date-from {
+        margin-left: 20px;
     }
 
     .condition-right {
