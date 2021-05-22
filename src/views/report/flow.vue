@@ -181,7 +181,7 @@
             }
             let from = moment(this.from).format('x');
             let to = moment(this.to).format('x');
-            getStatFlow(this.selectedToilets.toString(), from, to, statType).then(res => {
+            getStatFlow(this.selectedToilets, from, to, statType).then(res => {
                 let xAxis = [];
                 let manDatas = [];
                 let womanDatas = [];

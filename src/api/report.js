@@ -10,8 +10,8 @@ import request from '@/utils/request';
 export function getStatFlow(tioletIds, beginTime, endTime, statType) {
     return request({
         url: '/Api/Statistcs/GetStatFlow',
-        method: 'get',
-        params: { tioletIds, beginTime, endTime, statType }
+        method: 'post',
+        data: { tioletIds, beginTime, endTime, statType }
     })
 }
 
@@ -19,8 +19,8 @@ export function getStatFlow(tioletIds, beginTime, endTime, statType) {
 export function getStatKsp(tioletIds, beginTime, endTime, statType) {
     return request({
         url: '/Api/Statistcs/GetStatKsp',
-        method: 'get',
-        params: { tioletIds, beginTime, endTime, statType }
+        method: 'post',
+        data: { tioletIds, beginTime, endTime, statType }
     })
 }
 
@@ -28,8 +28,8 @@ export function getStatKsp(tioletIds, beginTime, endTime, statType) {
 export function getStatWaterAndElec(tioletIds, beginTime, endTime, statType) {
     return request({
         url: '/Api/Statistcs/GetStatWaterAndElec',
-        method: 'get',
-        params: { tioletIds, beginTime, endTime, statType }
+        method: 'post',
+        data: { tioletIds, beginTime, endTime, statType }
     })
 }
 
@@ -37,7 +37,25 @@ export function getStatWaterAndElec(tioletIds, beginTime, endTime, statType) {
 export function getStatEnv(tioletId, recordDate) {
     return request({
         url: '/Api/Statistcs/GetStatEnv',
-        method: 'get',
-        params: { tioletId, recordDate }
+        method: 'post',
+        data: { tioletId, recordDate }
+    })
+}
+
+// 耗材剩余量
+export function getStatConsumResidue(tioletId) {
+    return request({
+        url: '/Api/Statistcs/GetStatConsumResidue',
+        method: 'post',
+        data: { tioletId }
+    })
+}
+
+// 耗材统计
+export function getStatConsum(tioletId, beginTime, endTime, statType) {
+    return request({
+        url: '/Api/Statistcs/GetStatConsum',
+        method: 'post',
+        data: { tioletId, beginTime, endTime, statType }
     })
 }

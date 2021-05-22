@@ -52,6 +52,9 @@ const responsePageGroup = {
   }, "errcode": 0, "errmsg": "获取分组列表成功！", "success": true
 }
 
+const responseAllGroup = {  "data": [    {      "groupCode": "22222",      "groupName": "天府三街"    }
+],  "errcode": 0,  "errmsg": "获取分组列表成功！",  "success": true}
+
 module.exports = [
   {
     url: '/Api/Group/AddGroup',
@@ -86,6 +89,13 @@ module.exports = [
     type: 'post',
     response: params => {
       return responsePageGroup;
+    }
+  },
+  {
+    url: '/Api/Group/GetAllGroups',
+    type: 'get',
+    response: params => {
+      return responseAllGroup;
     }
   }
 ]

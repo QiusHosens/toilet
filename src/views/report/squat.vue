@@ -165,7 +165,7 @@
             }
             let from = moment(this.from).format('x');
             let to = moment(this.to).format('x');
-            getStatKsp(this.selectedToilets.toString(), from, to, statType).then(res => {
+            getStatKsp(this.selectedToilets, from, to, statType).then(res => {
                 console.log(res);
                 let xAxis = [];
                 let manDatas = [];

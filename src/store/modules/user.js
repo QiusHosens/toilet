@@ -1,13 +1,14 @@
 import { login, logout, getInfo } from '@/api/user'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { getToken, setToken, removeToken, getState, setState, removeState } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
 
 const state = {
   token: getToken(),
-  name: '',
+  name: getState() ? getState().name : '',
   avatar: '',
   introduction: '',
-  roles: []
+  roles: [],
+  distCode: getState() ? getState().distCode : ''
 }
 
 const mutations = {
@@ -25,6 +26,9 @@ const mutations = {
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles
+  },
+  SET_DIST_CODE: (state, distCode) => {
+    state.distCode = distCode
   }
 }
 
@@ -42,6 +46,7 @@ const actions = {
         commit('SET_TOKEN', token)
         commit('SET_NAME', username.trim())
         setToken(token)
+        setState(state)
         resolve()
       }).catch(error => {
         reject(error)
@@ -80,6 +85,9 @@ const actions = {
         // commit('SET_NAME', name)
         commit('SET_AVATAR', data.headImgUrl)
         commit('SET_INTRODUCTION', '1')
+        commit('SET_DIST_CODE', data.distCode)
+
+        setState(state)
 
         const resolveData = {
           roles: ['admin'],
@@ -97,10 +105,12 @@ const actions = {
   // user logout
   logout({ commit, state, dispatch }) {
     return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
+      // logout(state.token).then(() => {
+        debugger
         commit('SET_TOKEN', '')
         commit('SET_ROLES', [])
         removeToken()
+        removeState()
         resetRouter()
 
         // reset visited views and cached views
@@ -108,9 +118,9 @@ const actions = {
         dispatch('tagsView/delAllViews', null, { root: true })
 
         resolve()
-      }).catch(error => {
-        reject(error)
-      })
+      // }).catch(error => {
+      //   reject(error)
+      // })
     })
   },
 
@@ -120,6 +130,7 @@ const actions = {
       commit('SET_TOKEN', '')
       commit('SET_ROLES', [])
       removeToken()
+      removeState()
       resolve()
     })
   },

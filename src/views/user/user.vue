@@ -4,23 +4,32 @@
         <div class="row-div">
             <div class="row-left">
                 <el-button type="primary" size="small" @click="clickAddUser()">新增人员</el-button>
-                <el-button type="primary" size="small" @click="clickImportUser()">导入人员</el-button>
-                <el-button type="danger" size="small" @click="clickDelUser()">删除人员</el-button>
+                <!-- <el-button type="primary" size="small" @click="clickImportUser()">导入人员</el-button> -->
+                <!-- <el-button type="danger" size="small" @click="clickDelUser()">删除人员</el-button> -->
             </div>
             <div class="row-right">
                 <span class="search-span">人员名称</span>
                 <el-input class="search-input" v-model="userName" size="small" placeholder="请输入人员名称"></el-input>
-                <span class="search-span search-button">分销商编码</span>
-                <el-input class="search-input" v-model="distCode" size="small" placeholder="请输入分销商编码"></el-input>
+                <span class="search-span search-button">分销商</span>
+                <el-select class="search-input" v-model="distCode" placeholder="请选择分销商" clearable>
+                    <el-option
+                    v-for="item in allDists"
+                    :key="item.distCode"
+                    :label="item.distName"
+                    :value="item.distCode">
+                    </el-option>
+                </el-select>
+                <!-- <el-input class="search-input" v-model="distCode" size="small" placeholder="请输入分销商编码"></el-input> -->
                 <el-button class="search-button" type="primary" size="small"  icon="el-icon-search" @click="search()">搜索</el-button>
             </div>
         </div>
 
         <!-- table -->
-        <div class="row-div">
-            <el-table
+        <div class="row-div table-div">
+            <el-table class="table-info"
                     :data="tableData"
                     highlight-current-row
+                    height="calc(100% - 32px)"
                     style="width: 100%">
                 <el-table-column
                         type="selection"
@@ -46,8 +55,8 @@
                         fixed
                         align="center"
                         header-align="center"
-                        prop="distCode"
-                        label="分销商编码"
+                        prop="distName"
+                        label="所属分销商"
                         width="300">
                 </el-table-column>
                 <el-table-column
@@ -63,6 +72,9 @@
                         prop="duty"
                         label="职责"
                         width="150">
+                        <template slot-scope="scope">
+                            {{ scope.row.duty == '0' ? '查看员' : '' }}
+                        </template>
                 </el-table-column>
                 <el-table-column
                         align="center"
@@ -84,7 +96,7 @@
                 <el-table-column
                         align="center"
                         header-align="center"
-                        prop="emall"
+                        prop="email"
                         label="邮箱地址"
                         width="150">
                 </el-table-column>
@@ -95,13 +107,13 @@
                         label="头像"
                         width="100">
                 </el-table-column>
-                <el-table-column
+                <!-- <el-table-column
                         align="center"
                         header-align="center"
                         prop="lastLoginTime"
                         label="最近登陆时间"
                         width="200">
-                </el-table-column>
+                </el-table-column> -->
                 <el-table-column
                         align="center"
                         header-align="center"
@@ -124,7 +136,9 @@
                     :current-page="pageIndex"
                     :page-size="10"
                     layout="prev, pager, next"
-                    :page-count="totalPage">
+                    :page-count="totalPage"
+                    @prev-click="prevClick()"
+                    @next-click="nextClick()">
             </el-pagination>
         </div>
 
@@ -137,17 +151,31 @@
                 <el-form-item class="item-no-width" label="人员类型" :label-width="formLabelWidth">
                     <el-input class="modal-input" v-model="form.userType" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item class="item-no-width" label="分销商编码" :label-width="formLabelWidth">
-                    <el-input class="modal-input" v-model="form.distCode" autocomplete="off"></el-input>
+                <el-form-item class="item-no-width" label="所属分销商" :label-width="formLabelWidth">
+                    <el-select class="modal-input" v-model="form.distCode" placeholder="请选择">
+                        <el-option
+                        v-for="item in allDists"
+                        :key="item.distCode"
+                        :label="item.distName"
+                        :value="item.distCode">
+                        </el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item class="item-no-width" label="人员真名" :label-width="formLabelWidth">
                     <el-input class="modal-input" v-model="form.realName" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item class="item-no-width" label="职责" :label-width="formLabelWidth">
-                    <el-input class="modal-input" v-model="form.duty" autocomplete="off"></el-input>
+                    <el-select class="modal-input" v-model="form.duty" placeholder="请选择">
+                        <el-option
+                                v-for="item in dutys"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item class="item-no-width" label="性别" :label-width="formLabelWidth">
-                    <el-select class="modal-input" v-model="value" placeholder="请选择">
+                    <el-select class="modal-input" v-model="form.sex" placeholder="请选择">
                         <el-option
                                 v-for="item in sexs"
                                 :key="item.value"
@@ -160,7 +188,7 @@
                     <el-input class="modal-input" v-model="form.contactTel" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item class="item-no-width" label="邮箱地址" :label-width="formLabelWidth">
-                    <el-input class="modal-input" v-model="form.emall" autocomplete="off"></el-input>
+                    <el-input class="modal-input" v-model="form.email" autocomplete="off"></el-input>
                 </el-form-item>
                 <div class="item-avatar">
                     <el-upload
@@ -189,8 +217,8 @@
                 <el-form-item label="人员类型" :label-width="formLabelWidth">
                     {{ form.userType }}
                 </el-form-item>
-                <el-form-item label="分销商编码" :label-width="formLabelWidth">
-                    {{ form.distCode }}
+                <el-form-item label="所属分销商" :label-width="formLabelWidth">
+                    {{ form.distName }}
                 </el-form-item>
                 <el-form-item label="人员真名" :label-width="formLabelWidth">
                     {{ form.realName }}
@@ -205,7 +233,7 @@
                     {{ form.contactTel }}
                 </el-form-item>
                 <el-form-item label="邮箱地址" :label-width="formLabelWidth">
-                    {{ form.emall }}
+                    {{ form.email }}
                 </el-form-item>
                 <div class="item-avatar">
                     <img v-if="form.imageUrl" :src="form.imageUrl" class="avatar">
@@ -216,6 +244,7 @@
         <!-- bind toilet -->
         <el-dialog :title="bindModalTitle" :visible.sync="bindModalShow" center width="1000px">
             <el-transfer
+                    :titles="['未绑定厕所', '已绑定厕所']"
                     filterable
                     :filter-method="filterMethod"
                     filter-placeholder="请输入公厕名"
@@ -227,12 +256,27 @@
                 <el-button type="primary" @click="saveBind()">确 定</el-button>
             </div>
         </el-dialog>
+
+        <el-dialog
+            :title="deleteModalTitle"
+            :visible.sync="deleteModalShow"
+            width="30%">
+            <span>确定删除用户{{ form.userName }}?</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="deleteModalShow = false">取 消</el-button>
+                <el-button type="primary" @click="delUser()">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
 <script>
   import { addUser, deleteUser, existUser, updateUser, pageUsers, getUserPower, setUserPower } from '@/api/user';
-  import { pageToilets } from '@/api/toilet';
+  import { pageToilets, allToilets } from '@/api/toilet';
+  import { getAllDists } from '@/api/dist'
+  import store from '@/store'
+  import { MessageBox, Message } from 'element-ui'
+  import Vue from 'vue'
 
   export default {
     name: "User",
@@ -240,6 +284,8 @@
       return {
         viewModalTitle: '人员信息',
         viewModalShow: false,
+        deleteModalTitle: '删除分销商',
+        deleteModalShow: false,
         modalTitle: '新增人员',
         modalShow: false,
         bindModalTitle: '绑定公厕',
@@ -252,8 +298,12 @@
           value: '1',
           label: '女'
         }],
+        dutys: [{
+            value: '0',
+            label: '查看员'
+        }],
         emptyForm: {
-          userId: "",
+        //   userId: "",
           userName: "",
           userType: "",
           distCode: "",
@@ -261,9 +311,9 @@
           duty: "",
           sex: "",
           contactTel: "",
-          emall: "",
+          email: "",
           headImgUrl: "",
-          lastLoginTime: ""
+        //   lastLoginTime: ""
         },
         form: {
           userId: "",
@@ -274,7 +324,7 @@
           duty: "",
           sex: "",
           contactTel: "",
-          emall: "",
+          email: "",
           headImgUrl: "",
           lastLoginTime: ""
         },
@@ -296,6 +346,9 @@
         toilets: [],
         toiletPage: 0,
         userToilets: [],
+        hasAllToilet: false,
+        hasUserToilet: false,
+        allDists: [],
         filterMethod(query, item) {
           return item.label.indexOf(query) > -1;
         }
@@ -303,13 +356,16 @@
     },
     mounted() {
       this.pageUser();
+      this.getAllDists();
     },
     methods: {
       clickAddUser() {
-        this.modalTitle = '新增人员';
-        this.form = this.emptyForm;
-        this.saveType = 'add';
-        this.modalShow = true;
+        this.getAllDists(() => {
+            this.modalTitle = '新增人员';
+            this.form = JSON.parse(JSON.stringify(this.emptyForm));
+            this.saveType = 'add';
+            this.modalShow = true;
+        });
       },
       clickImportUser() {
 
@@ -328,20 +384,21 @@
         this.modalShow = true;
       },
       clickDeleteUser(user) {
-        deleteUser(user.userId).then(res => {
-          // 刷新分页
-          this.pageUser();
-        });
+          this.form = user;
+        this.deleteModalShow = true;
       },
       save() {
-        console.log(this.form);
         if (this.saveType == 'add') {
           addUser(this.form).then(res => {
             this.modalShow = false;
+            // 刷新分页
+            this.pageUser();
           });
         } else if (this.saveType == 'update') {
           updateUser(this.form).then(res => {
             this.modalShow = false;
+            // 刷新分页
+            this.pageUser();
           })
         } else {
           this.modalShow = false;
@@ -351,11 +408,19 @@
         let powers = [];
         this.userToilets.forEach(userToilet => {
           powers.push({
-            toiletCode: userToilet.key
+            toiletCode: userToilet,
+            userName: this.form.userName
           });
         });
         setUserPower(this.form.userName, powers).then(res => {
           this.bindModalShow = false;
+        });
+      },
+      delUser() {
+        deleteUser(this.form.userId).then(res => {
+          // 刷新分页
+          this.pageUser();
+          this.deleteModalShow = false;
         });
       },
       search() {
@@ -369,46 +434,79 @@
       },
       clickBindToilet(user) {
         this.form = user;
+        this.hasAllToilet = false;
+        this.hasUserToilet = false;
+        this.userToilets = [];
         this.pageToilet(() => {
-          this.bindModalShow = true;
+            this.hasAllToilet = true;
+            this.showBindModal();
         });
-        this.getUserToilets(user);
+        this.getUserToilets(user, () => {
+            this.hasUserToilet = true;
+            this.showBindModal();
+        });
       },
-      getUserToilets(user) {
+      showBindModal() {
+          if (this.hasAllToilet && this.hasUserToilet) {
+              this.bindModalShow = true;
+          }
+      },
+      getUserToilets(user, callback) {
         getUserPower(user.userName).then(res => {
-          this.userToilets = [];
-          res.forEach(userToilet => {
-            this.userToilets.push({
-              label: userToilet.toiletCode,
-              key: userToilet.toiletCode,
-            })
-          });
+          for (let userToilet of res) {
+              this.userToilets.push(userToilet.toiletCode);
+          }
+          if (callback) {
+              callback();
+          }
         });
       },
       pageToilet(callback) {
-        pageToilets(this.pageSize, this.pageIndex, '', '', '').then(res => {
+        allToilets().then(res => {
           this.toilets = [];
-          res.pageData.forEach(toilet => {
+          res.forEach(toilet => {
             this.toilets.push({
               label: toilet.toiletName,
               key: toilet.toiletCode,
             })
           });
-          this.toiletPage = res.totalPage;
 
           if (callback) {
             callback();
           }
         })
       },
+      getAllDists(callback) {
+          let distCode = store.getters.distCode
+          getAllDists(distCode).then(res => {
+            if (res && res.length > 0) {
+                this.allDists = res;
+                this.emptyForm.distCode = this.allDists[0].distCode;
+                if (callback) {
+                    callback();
+                }
+              } else if (callback) {
+                Message({
+                    message: '请先添加分销商',
+                    type: 'warn',
+                    duration: 5 * 1000
+                });
+              }
+          });
+      },
       handleSizeChange(pageSize) {
         this.pageSize = pageSize;
       },
       handleCurrentChange(pageIndex) {
         this.pageIndex = pageIndex;
-        this.pageToilet();
+        this.pageUser();
       },
-
+      prevClick() {
+          this.handleCurrentChange(-- this.pageIndex);
+      },
+      nextClick() {
+        this.handleCurrentChange(++ this.pageIndex);
+      },
       handleAvatarSuccess(res, file) {
         this.imageUrl = URL.createObjectURL(file.raw);
       },
@@ -431,6 +529,8 @@
 <style lang="less" scoped>
     .group-container {
         padding: 20px;
+
+        height: 100%;
     }
 
     .modal-input {
@@ -471,6 +571,14 @@
 
     .row-div {
         margin-bottom: 10px;
+    }
+
+    .table-div {
+        height: calc(~"100% - 42px");
+
+        .table-info {
+            margin-bottom: 10px
+        }
     }
 
     .row-left {

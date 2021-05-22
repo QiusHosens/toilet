@@ -4,14 +4,14 @@ export function addDist(dist) {
   return request({
     url: '/Api/Dist/AddDist',
     method: 'post',
-    params: dist
+    data: dist
   })
 }
 
 export function deleteDist(distId) {
   return request({
     url: '/Api/Dist/DeleteDist',
-    method: 'post',
+    method: 'get',
     params: { distId }
   })
 }
@@ -20,7 +20,7 @@ export function existDist(distSName, supDistCode) {
   return request({
     url: '/Api/Dist/Exsit',
     method: 'post',
-    params: { distSName, supDistCode }
+    data: { distSName, supDistCode }
   })
 }
 
@@ -28,7 +28,7 @@ export function updateDist(dist) {
   return request({
     url: '/Api/Dist/UpdateDist',
     method: 'post',
-    params: dist
+    data: dist
   })
 }
 
@@ -36,6 +36,14 @@ export function pageDists(pageSize, pageIndex, orderByField, orderBy, distSname)
   return request({
     url: '/Api/Dist/GetDists',
     method: 'post',
-    params: { pageSize, pageIndex, orderByField, orderBy, distSname }
+    data: { pageSize, pageIndex, orderByField, orderBy, distSname }
+  })
+}
+
+export function getAllDists(distCode) {
+  return request({
+    url: '/Api/Dist/GetAllDists',
+    method: 'get',
+    params: { distCode }
   })
 }

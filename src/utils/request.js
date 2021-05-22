@@ -19,8 +19,24 @@ service.interceptors.request.use(
       // let each request carry token
       // ['X-Token'] is a custom headers key
       // please modify it according to the actual situation
-      config.headers['X-Token'] = getToken()
+      // config.headers['X-Token'] = getToken()
+      config.headers['Authorization'] = 'Bearer ' + getToken()
     }
+    config.headers['Content-Type'] = 'application/json';
+    // config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+
+    // if(config.method === 'post'){
+    //   console.log('post config', config)
+    //   config.transformRequest = [function (data) {
+    //     // let ret = '';
+    //     // for (let it in data) {
+    //     //   ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+    //     // }
+    //     let ret = JSON.stringify(data);
+    //     console.log('post request', ret);
+    //     return ret;
+    //   }];
+    // }
     return config
   },
   error => {

@@ -45,7 +45,7 @@ const responseUserInfo = {
     "duty": 0,
     "sex": 0,
     "contactTel": "False",
-    "emall": "522741750@qq.com",
+    "email": "522741750@qq.com",
     "headImgUrl": "string",
     "lastLoginTime": "2021-04-24T08:49:04"
   },  "errcode": 0,
@@ -85,7 +85,7 @@ const responseAddUser = {
     "duty": 0,
     "sex": 0,
     "contactTel": "string",
-    "emall": "string",
+    "email": "string",
     "headImgUrl": "string",
     "lastLoginTime": "2021-04-24T00:54:26.872Z"
   },
@@ -117,7 +117,7 @@ const responsePageUser = {
         "duty": 0,
         "sex": 0,
         "contactTel": "13980411371",
-        "emall": "522741750@qq.com",
+        "email": "522741750@qq.com",
         "headImgUrl": "string",
         "lastLoginTime": "2021-04-24T08:49:04"
       },
@@ -130,7 +130,7 @@ const responsePageUser = {
         "duty": 0,
         "sex": 0,
         "contactTel": "string",
-        "emall": "string",
+        "email": "string",
         "headImgUrl": "string",
         "lastLoginTime": null
       }
@@ -213,7 +213,7 @@ module.exports = [
 
   {
     url: '/Api/User/Login',
-    type: 'post',
+    type: 'get',
     response: _ => {
       return responseLoginInfo;
     }

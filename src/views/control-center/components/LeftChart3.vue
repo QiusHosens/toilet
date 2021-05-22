@@ -1,7 +1,7 @@
 <template>
   <div class="top-right-cmp">
     <div class="dc-text">
-      好评率
+      告警
       <dv-decoration-3 style="width:200px;height:20px;" />
     </div>
     <dv-active-ring-chart :config="config" />
@@ -19,19 +19,23 @@
         config: {
           data: [
             {
-              name: '好评',
+              name: '告警1',
               value: 356
             },
             {
-              name: '中评',
+              name: '告警2',
               value: 215
             },
             {
-              name: '差评',
+              name: '告警3',
+              value: 90
+            },
+            {
+              name: '告警4',
               value: 90
             }
           ],
-          color: ['#4169E1', '#DC143C', '#FFFFFF'],
+          color: ['#4169E1', '#DC143C', '#FFFFFF', '#9DFFFF'],
           radius: '75%',
           activeRadius: '80%'
         }

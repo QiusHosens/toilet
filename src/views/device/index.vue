@@ -4,34 +4,35 @@
         <div class="row-div">
             <div class="row-left">
                 <el-button type="primary" size="small" @click="clickAddToilet()">新增公厕</el-button>
-                <el-button type="primary" size="small" @click="clickImportToilet()">导入公厕</el-button>
-                <el-button type="danger" size="small" @click="clickDelToilet()">删除公厕</el-button>
+                <!-- <el-button type="primary" size="small" @click="clickImportToilet()">导入公厕</el-button> -->
+                <!-- <el-button type="danger" size="small" @click="clickDelToilet()">删除公厕</el-button> -->
             </div>
-            <!--<div class="row-right">-->
-                <!--<span class="search-span">公厕名称</span>-->
-                <!--<el-input class="search-input" v-model="distSname" size="small" placeholder="请输入客户名称"></el-input>-->
-                <!--<el-button class="search-button" type="primary" size="small"  icon="el-icon-search" @click="search()">搜索</el-button>-->
-            <!--</div>-->
+            <div class="row-right">
+                <span class="search-span">公厕名称</span>
+                <el-input class="search-input" v-model="toiletName" size="small" placeholder="请输入公厕名称"></el-input>
+                <el-button class="search-button" type="primary" size="small"  icon="el-icon-search" @click="search()">搜索</el-button>
+            </div>
         </div>
 
         <!-- table -->
-        <div class="row-div">
-            <el-table
+        <div class="row-div table-div">
+            <el-table class="table-info"
                     :data="tableData"
                     highlight-current-row
+                    height="calc(100% - 32px)"
                     style="width: 100%">
                 <el-table-column
                         type="selection"
                         width="55">
                 </el-table-column>
-                <el-table-column
+                <!-- <el-table-column
                         fixed
                         align="center"
                         header-align="center"
                         prop="toiletCode"
                         label="公厕编码"
                         width="300">
-                </el-table-column>
+                </el-table-column> -->
                 <el-table-column
                         fixed
                         align="center"
@@ -73,15 +74,15 @@
                 <el-table-column
                         align="center"
                         header-align="center"
-                        prop="distCode"
-                        label="分销商编码"
+                        prop="distName"
+                        label="所属分销商"
                         width="300">
                 </el-table-column>
                 <el-table-column
                         align="center"
                         header-align="center"
-                        prop="groupCode"
-                        label="分组编码"
+                        prop="groupName"
+                        label="分组名"
                         width="100">
                 </el-table-column>
                 <el-table-column
@@ -161,7 +162,9 @@
                     :current-page="pageIndex"
                     :page-size="10"
                     layout="prev, pager, next"
-                    :page-count="totalPage">
+                    :page-count="totalPage"
+                    @prev-click="prevClick()"
+                    @next-click="nextClick()">
             </el-pagination>
         </div>
 
@@ -179,16 +182,29 @@
                 </el-form-item>
                 <el-form-item label="公厕星级" :label-width="formLabelWidth">
                     <el-rate
-
                             v-model="form.toiletStar"
                             :colors="['#99A9BF', '#F7BA2A', '#FF9900']">
                     </el-rate>
                 </el-form-item>
-                <el-form-item label="分销商编码" :label-width="formLabelWidth">
-                    <el-input v-model="form.distCode" autocomplete="off"></el-input>
+                <el-form-item label="所属分销商" :label-width="formLabelWidth">
+                    <el-select v-model="form.distCode" :disabled="form.toiletId ? true : false" placeholder="请选择" @change="distChange">
+                        <el-option
+                        v-for="item in allDists"
+                        :key="item.distCode"
+                        :label="item.distName"
+                        :value="item.distCode">
+                        </el-option>
+                    </el-select>
                 </el-form-item>
-                <el-form-item label="分组编码" :label-width="formLabelWidth">
-                    <el-input v-model="form.groupCode" autocomplete="off"></el-input>
+                <el-form-item label="所属分组" :label-width="formLabelWidth">
+                    <el-select v-model="form.groupCode" :disabled="form.toiletId ? true : false" placeholder="请选择">
+                        <el-option
+                        v-for="item in allGroups"
+                        :key="item.groupCode"
+                        :label="item.groupName"
+                        :value="item.groupCode">
+                        </el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="位置(经度/纬度)" :label-width="formLabelWidth">
                     <el-input class="position-input" v-model="form.longitude" autocomplete="off"></el-input>
@@ -232,11 +248,11 @@
                             :colors="['#99A9BF', '#F7BA2A', '#FF9900']">
                     </el-rate>
                 </el-form-item>
-                <el-form-item label="分销商编码" :label-width="formLabelWidth">
-                    {{ form.distCode }}
+                <el-form-item label="所属分销商" :label-width="formLabelWidth">
+                    {{ form.distName }}
                 </el-form-item>
-                <el-form-item label="分组编码" :label-width="formLabelWidth">
-                    {{ form.groupCode }}
+                <el-form-item label="所属分组" :label-width="formLabelWidth">
+                    {{ form.groupName }}
                 </el-form-item>
                 <el-form-item label="位置(经度/纬度)" :label-width="formLabelWidth">
                     {{ form.longitude }}, {{ form.latitude }}
@@ -252,11 +268,26 @@
                 </el-form-item>
             </el-form>
         </el-dialog>
+
+        <el-dialog
+            :title="deleteModalTitle"
+            :visible.sync="deleteModalShow"
+            width="30%">
+            <span>确定删除公厕{{ form.toiletName }}?</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="deleteModalShow = false">取 消</el-button>
+                <el-button type="primary" @click="delToilet()">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
 <script>
   import { addToilet, deleteToilet, existToilet, updateToilet, pageToilets } from '@/api/toilet';
+  import { getAllDists } from '@/api/dist'
+  import { getAllGroups } from '@/api/group'
+  import store from '@/store'
+  import { MessageBox, Message } from 'element-ui'
 
   export default {
     name: "Device",
@@ -264,12 +295,14 @@
       return {
         viewModalTitle: '公厕信息',
         viewModalShow: false,
+        deleteModalTitle: '删除公厕',
+        deleteModalShow: false,
         modalTitle: '新增公厕',
         modalShow: false,
         formLabelWidth: '150px',
         emptyForm: {
-          toiletId: "",
-          toiletCode: "",
+        //   toiletId: "",
+        //   toiletCode: "",
           toiletName: "",
           toiletAdr: "",
           toiletTel: "",
@@ -282,7 +315,7 @@
           numSeatFemale: "",
           numSeatThird: "",
           planUrl: "",
-          crtDate: "",
+        //   crtDate: "",
           memo: ""
         },
         form: {
@@ -304,12 +337,16 @@
           memo: ""
         },
 
+        toiletName: '',
+
         tableData: [],
         pageIndex: 1,
         pageSize: 10,
         totalPage: 0,
 
-        saveType: ''
+        saveType: '',
+        allDists: [],
+        allGroups: []
       }
     },
     mounted() {
@@ -317,10 +354,12 @@
     },
     methods: {
       clickAddToilet() {
-        this.modalTitle = '新增公厕';
-        this.form = this.emptyForm;
-        this.saveType = 'add';
-        this.modalShow = true;
+        this.getAllDists(() => {
+            this.modalTitle = '新增公厕';
+            this.form = JSON.parse(JSON.stringify(this.emptyForm));
+            this.saveType = 'add';
+            this.modalShow = true;
+        });
       },
       clickImportToilet() {
 
@@ -339,39 +378,83 @@
         this.modalShow = true;
       },
       clickDeleteToilet(toilet) {
-        deleteToilet(toilet.toiletId).then(res => {
-          // 刷新分页
-          this.pageToilet();
-        });
+          this.form = toilet;
+        this.deleteModalShow = true;
       },
       save() {
-        console.log(this.form);
         if (this.saveType == 'add') {
           addToilet(this.form).then(res => {
             this.modalShow = false;
+            // 刷新分页
+            this.pageToilet();
           });
         } else if (this.saveType == 'update') {
           updateToilet(this.form).then(res => {
             this.modalShow = false;
+            // 刷新分页
+            this.pageToilet();
           })
         } else {
           this.modalShow = false;
         }
       },
+      getAllDists(callback) {
+          let distCode = store.getters.distCode
+          getAllDists(distCode).then(res => {
+              if (res && res.length > 0) {
+                this.allDists = res;
+                this.emptyForm.distCode = this.allDists[0].distCode;
+                this.getGroupsByDist(this.emptyForm.distCode);
+                if (callback) {
+                    callback();
+                }
+              } else {
+                Message({
+                    message: '请先添加分销商',
+                    type: 'warn',
+                    duration: 5 * 1000
+                });
+              }
+          });
+      },
+      distChange(distCode) {
+          this.getGroupsByDist(distCode);
+      },
+      getGroupsByDist(distCode) {
+          this.allGroups = [];
+          getAllGroups(distCode).then(res => {
+              this.allGroups = res;
+          });
+      },
+      delToilet() {
+        deleteToilet(this.form.toiletId).then(res => {
+          // 刷新分页
+          this.pageToilet();
+          this.deleteModalShow = false;
+        });
+      },
       search() {
         this.pageToilet();
       },
       pageToilet() {
-        pageToilets(this.pageSize, this.pageIndex, '', '', this.distSname).then(res => {
+        pageToilets(this.pageSize, this.pageIndex, '', '', this.toiletName).then(res => {
           this.tableData = res.pageData;
           this.totalPage = res.totalPage;
         })
       },
       handleSizeChange(pageSize) {
         this.pageSize = pageSize;
+        this.pageToilet();
       },
       handleCurrentChange(pageIndex) {
         this.pageIndex = pageIndex;
+        this.pageToilet();
+      },
+      prevClick() {
+          this.handleCurrentChange(-- this.pageIndex);
+      },
+      nextClick() {
+        this.handleCurrentChange(++ this.pageIndex);
       }
     }
   }
@@ -380,6 +463,8 @@
 <style lang="less" scoped>
     .group-container {
         padding: 20px;
+
+        height: 100%;
     }
 
     /deep/ .el-input {
@@ -409,6 +494,14 @@
 
     .row-div {
         margin-bottom: 10px;
+    }
+
+    .table-div {
+        height: calc(~"100% - 42px");
+
+        .table-info {
+            margin-bottom: 10px
+        }
     }
 
     .row-left {

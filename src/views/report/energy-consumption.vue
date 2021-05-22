@@ -165,7 +165,7 @@
             }
             let from = moment(this.from).format("x");
             let to = moment(this.to).format("x");
-            getStatWaterAndElec(this.selectedToilets.toString(), from, to, statType).then(res => {
+            getStatWaterAndElec(this.selectedToilets, from, to, statType).then(res => {
                 this.tableData = res;
 
                 let xAxis = [];

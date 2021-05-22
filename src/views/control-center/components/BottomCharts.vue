@@ -1,8 +1,9 @@
 <template>
   <div class="bottom-charts">
-    <BottomRightChart />
-    <dv-decoration-2 class="decoration-1" :reverse="true" style="width:5px;" />
-    <BottomLeftChart />
+    <Right-Chart-1 />
+    <!-- <BottomRightChart /> -->
+    <!-- <dv-decoration-2 class="decoration-1" :reverse="true" style="width:5px;" /> -->
+    <!-- <BottomLeftChart /> -->
 
   </div>
 </template>
@@ -10,11 +11,13 @@
 <script>
   import BottomLeftChart from './BottomLeftChart'
   import BottomRightChart from './BottomRightChart'
+  import RightChart1 from './RightChart1'
   export default {
     name: 'BottomCharts',
     components: {
       BottomLeftChart,
-      BottomRightChart
+      BottomRightChart,
+      RightChart1
     },
     data() {
         return {};

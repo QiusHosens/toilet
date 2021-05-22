@@ -14,7 +14,6 @@
                 <el-select
                     size="small"
                     v-model="selectedToilets"
-                    clearable
                     filterable
                     style="margin-left: 20px;"
                     placeholder="请选择厕所">
@@ -235,16 +234,23 @@
       },
       mounted() {
           this.initTime();
-          this.getAllToilets();
-          this.search();
+          this.getAllToilets(() => {
+              if (this.toilets && this.toilets.length > 0) {
+                  this.selectedToilets = this.toilets[0].toiletCode;
+                    this.search();
+              }
+          });
       },
       methods: {
         initTime() {
             this.from = moment().toDate();
         },
-        getAllToilets() {
+        getAllToilets(callback) {
             allToilets().then(res => {
                 this.toilets = res;
+                if (callback) {
+                    callback();
+                }
             });
         },
         tabClick() {
@@ -280,7 +286,7 @@
         },
         search() {
             let from = moment(this.from).format('x');
-            getStatEnv(this.selectedToilets.toString(), from).then(res => {
+            getStatEnv(this.selectedToilets, from).then(res => {
                 console.log(res);
                 let xAxis = [];
 

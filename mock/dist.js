@@ -55,6 +55,9 @@ const responseDeleteCustom = {
   "errcode": 1004, "errmsg": "删除经销商失败！没有找到相应的资源", "success": true
 }
 
+const responseAllCustom = {  "data": [    {      "distCode": "1aaa2b3c-903a-438c-981a-2656be492772",      "distName": "艾瑞斯1"    }
+],  "errcode": 0,  "errmsg": "获取经销商列表成功！",  "success": true}
+
 module.exports = [
   {
     url: '/Api/Dist/AddDist',
@@ -89,6 +92,13 @@ module.exports = [
     type: 'post',
     response: params => {
       return responsePageCustom;
+    }
+  },
+  {
+    url: '/Api/Dist/GetAllDists',
+    type: 'get',
+    response: params => {
+      return responseAllCustom;
     }
   }
 ]

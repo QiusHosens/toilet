@@ -4,14 +4,14 @@ export function addGroup(group) {
   return request({
     url: '/Api/Group/AddGroup',
     method: 'post',
-    params: group
+    data: group
   })
 }
 
 export function deleteGroup(groupId) {
   return request({
     url: '/Api/Group/DeleteGroup',
-    method: 'post',
+    method: 'get',
     params: { groupId }
   })
 }
@@ -20,7 +20,7 @@ export function existGroup(groupName, distCode) {
   return request({
     url: '/Api/Group/Exsit',
     method: 'post',
-    params: { groupName, distCode }
+    data: { groupName, distCode }
   })
 }
 
@@ -28,14 +28,22 @@ export function updateGroup(group) {
   return request({
     url: '/Api/Group/UpdateGroup',
     method: 'post',
-    params: group
+    data: group
   })
 }
 
 export function pageGroups(pageSize, pageIndex, orderByField, orderBy, groupName) {
   return request({
-    url: '/Api/Group/GetToiletGroups',
+    url: '/Api/Group/GetGroups',
     method: 'post',
-    params: { pageSize, pageIndex, orderByField, orderBy, groupName }
+    data: { pageSize, pageIndex, orderByField, orderBy, groupName }
+  })
+}
+
+export function getAllGroups(distCode) {
+  return request({
+    url: '/Api/Group/GetAllGroups',
+    method: 'get',
+    params: { distCode }
   })
 }

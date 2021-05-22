@@ -122,6 +122,44 @@ const responseReportStatEnv = {
         }
     ],  "errcode": 0,  "errmsg": "获取环境指标统计成功",  "success": true}
 
+const responseReportConsumResidue = {  "data": [    
+    {      
+        "toiletSn": "1111",      
+        "toiletType": 1,      
+        "consumName": "大卷纸巾盒-1",      
+        "residue": 50,      
+        "toiletName": null,      
+        "recordTime": 1624241400    
+    },
+{      "toiletSn": "1111",      "toiletType": 1,      "consumName": "干手器-1",      "residue": 22,      "toiletName": null,      "recordTime": 1621649400    },
+{      "toiletSn": "1111",      "toiletType": 1,      "consumName": "感应出纸机-1",      "residue": 46,      "toiletName": null,      "recordTime": 1624241400    },
+{      "toiletSn": "1111",      "toiletType": 1,      "consumName": "感皂液器-1",      "residue": 35,      "toiletName": null,      "recordTime": 1624241400    },
+{      "toiletSn": "1111",      "toiletType": 1,      "consumName": "擦手纸巾盒-1",      "residue": 45,      "toiletName": null,      "recordTime": 1624241400    },
+{      "toiletSn": "1111",      "toiletType": 1,      "consumName": "擦手纸巾盒-2",      "residue": 46,      "toiletName": null,      "recordTime": 1624241400    },
+{      "toiletSn": "1111",      "toiletType": 1,      "consumName": "飘香机-1",      "residue": 35,      "toiletName": null,      "recordTime": 1624241400    }
+],  "errcode": 0,  "errmsg": "获取耗材余量统计成功",  "success": true}
+
+const responseReportConsum = {  "data": [    
+    {      
+        "statTime": "202105",      
+        "consumName": "大卷纸巾盒-1",      
+        "useTimes": 7,      
+        "replaceTimes": 0    
+    },
+{      "statTime": "202105",      "consumName": "干手器-1",      "useTimes": 35,      "replaceTimes": 0    },
+{      "statTime": "202105",      "consumName": "感应出纸机-1",      "useTimes": 5,      "replaceTimes": 0    },
+{      "statTime": "202105",      "consumName": "感皂液器-1",      "useTimes": 8,      "replaceTimes": 0    },
+{      "statTime": "202105",      "consumName": "擦手纸巾盒-1",      "useTimes": 5,      "replaceTimes": 0    },
+{      "statTime": "202105",      "consumName": "擦手纸巾盒-2",      "useTimes": 5,      "replaceTimes": 0    },
+{      "statTime": "202105",      "consumName": "飘香机-1",      "useTimes": 335,      "replaceTimes": 0    },
+{      "statTime": "202106",      "consumName": "大卷纸巾盒-1",      "useTimes": 7,      "replaceTimes": 0    },
+{      "statTime": "202106",      "consumName": "感应出纸机-1",      "useTimes": 5,      "replaceTimes": 0    },
+{      "statTime": "202106",      "consumName": "感皂液器-1",      "useTimes": 9,      "replaceTimes": 0    },
+{      "statTime": "202106",      "consumName": "擦手纸巾盒-1",      "useTimes": 24,      "replaceTimes": 0    },
+{      "statTime": "202106",      "consumName": "擦手纸巾盒-2",      "useTimes": 5,      "replaceTimes": 0    },
+{      "statTime": "202106",      "consumName": "飘香机-1",      "useTimes": 335,      "replaceTimes": 0    }
+],  "errcode": 0,  "errmsg": "获取耗材统计成功",  "success": true}
+
 module.exports = [
     {
       url: '/Api/Statistcs/GetStatFlow',
@@ -149,6 +187,20 @@ module.exports = [
         type: 'get',
         response: param => {
             return responseReportStatEnv;
+        }
+    },
+    {
+        url: '/Api/Statistcs/GetStatConsumResidue',
+        type: 'get',
+        response: param => {
+            return responseReportConsumResidue;
+        }
+    },
+    {
+        url: '/Api/Statistcs/GetStatConsum',
+        type: 'get',
+        response: param => {
+            return responseReportConsum;
         }
     }
 ]

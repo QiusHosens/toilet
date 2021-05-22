@@ -1,6 +1,7 @@
 <template>
   <div id="data-view">
-    <dv-full-screen-container>
+    <!-- <dv-full-screen-container> -->
+    <div class="data-container">
       <div class="main-header">
         <div id="top-header">
           <dv-decoration-8 class="header-left-decoration" />
@@ -25,7 +26,7 @@
 
             <div class="rmctc-right-container">
               <dv-border-box-3 class="rmctc-chart-1">
-                <Right-Chart-1 />
+                <Right-Chart-3 />
               </dv-border-box-3>
             </div>
           </div>
@@ -35,8 +36,8 @@
           </dv-border-box-4>
         </div>
       </dv-border-box-1>
-
-    </dv-full-screen-container>
+    </div>
+    <!-- </dv-full-screen-container> -->
   </div>
 </template>
 
@@ -46,7 +47,7 @@ import LeftChart1 from './components/LeftChart1'
 import LeftChart2 from './components/LeftChart2'
 import LeftChart3 from './components/LeftChart3'
 import CenterCmp from './components/CenterCmp'
-import RightChart1 from './components/RightChart1'
+import RightChart3 from './components/RightChart3'
 import BottomCharts from './components/BottomCharts'
 
 export default {
@@ -56,7 +57,7 @@ export default {
       LeftChart2,
       LeftChart3,
       CenterCmp,
-      RightChart1,
+      RightChart3,
       BottomCharts
   },
   data() {
@@ -83,9 +84,11 @@ export default {
     height: 100%;
     background-color: #030409;
     color: #fff;
-    #dv-full-screen-container
-
+    // #dv-full-screen-container
+    .data-container
     {
+      width: 100%;
+      height: 100%;
       background-image: url('../../assets/home/bg.png');
       background-size: 100% 100%;
       box-shadow: 0 0 3px blue;

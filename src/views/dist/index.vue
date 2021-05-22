@@ -4,8 +4,8 @@
         <div class="row-div">
             <div class="row-left">
                 <el-button type="primary" size="small" @click="clickAddDist()">新增客户</el-button>
-                <el-button type="primary" size="small" @click="clickImportDist()">导入客户</el-button>
-                <el-button type="danger" size="small" @click="clickDelDist()">删除客户</el-button>
+                <!-- <el-button type="primary" size="small" @click="clickImportDist()">导入客户</el-button> -->
+                <!-- <el-button type="danger" size="small" @click="clickDelDist()">删除客户</el-button> -->
             </div>
             <div class="row-right">
                 <span class="search-span">客户名称</span>
@@ -15,43 +15,43 @@
         </div>
 
         <!-- table -->
-        <div class="row-div">
-            <el-table
+        <div class="row-div table-div">
+            <el-table class="table-info"
                     :data="tableData"
                     highlight-current-row
+                    height="calc(100% - 32px)"
                     style="width: 100%">
                 <el-table-column
                         type="selection"
                         width="55">
                 </el-table-column>
-                <el-table-column
+                <!-- <el-table-column
                         fixed
                         align="center"
                         header-align="center"
                         prop="distCode"
                         label="分销商编码"
                         width="300">
-                </el-table-column>
+                </el-table-column> -->
                 <el-table-column
-                        fixed
                         align="center"
                         header-align="center"
                         prop="distSName"
                         label="分销商名"
-                        width="100">
+                        width="115">
                 </el-table-column>
                 <el-table-column
                         align="center"
                         header-align="center"
                         prop="distFName"
                         label="分销商全名"
-                        width="100">
+                        width="150">
                 </el-table-column>
                 <el-table-column
                         align="center"
                         header-align="center"
-                        prop="supDistCode"
-                        label="父级分销商编码"
+                        prop="supDistName"
+                        label="父级分销商"
                         width="150">
                 </el-table-column>
                 <el-table-column
@@ -73,14 +73,14 @@
                         header-align="center"
                         prop="contactTel"
                         label="联系电话"
-                        width="100">
+                        width="150">
                 </el-table-column>
                 <el-table-column
                         align="center"
                         header-align="center"
                         prop="contactEmail"
                         label="邮箱地址"
-                        width="100">
+                        width="150">
                 </el-table-column>
                 <el-table-column
                         align="center"
@@ -110,7 +110,9 @@
                     :current-page="pageIndex"
                     :page-size="10"
                     layout="prev, pager, next"
-                    :page-count="totalPage">
+                    :page-count="totalPage"
+                    @prev-click="prevClick()"
+                    @next-click="nextClick()">
             </el-pagination>
         </div>
 
@@ -123,8 +125,15 @@
                 <el-form-item label="分销商全名" :label-width="formLabelWidth">
                     <el-input v-model="form.distFName" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="父级分销商编码" :label-width="formLabelWidth">
-                    <el-input v-model="form.supDistCode" autocomplete="off"></el-input>
+                <el-form-item label="父级分销商" :label-width="formLabelWidth">
+                    <el-select v-model="form.supDistCode" :disabled="form.distId ? true : false" placeholder="请选择">
+                        <el-option
+                        v-for="item in allDists"
+                        :key="item.distCode"
+                        :label="item.distName"
+                        :value="item.distCode">
+                        </el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="联系地址" :label-width="formLabelWidth">
                     <el-input v-model="form.contactAdr" autocomplete="off"></el-input>
@@ -151,17 +160,17 @@
         <!-- view model -->
         <el-dialog :title="viewModalTitle" :visible.sync="viewModalShow" center width="1000px">
             <el-form class="view-form" :model="form">
-                <el-form-item label="分销商编码" :label-width="formLabelWidth">
+                <!-- <el-form-item label="分销商编码" :label-width="formLabelWidth">
                     {{ form.distCode }}
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item label="分销商名" :label-width="formLabelWidth">
                     {{ form.distSName }}
                 </el-form-item>
                 <el-form-item label="分销商全名" :label-width="formLabelWidth">
                     {{ form.distFName }}
                 </el-form-item>
-                <el-form-item label="父级分销商编码" :label-width="formLabelWidth">
-                    {{ form.supDistCode }}
+                <el-form-item label="父级分销商" :label-width="formLabelWidth">
+                    {{ form.supDistName }}
                 </el-form-item>
                 <el-form-item label="联系地址" :label-width="formLabelWidth">
                     {{ form.contactAdr }}
@@ -175,23 +184,36 @@
                 <el-form-item label="邮箱地址" :label-width="formLabelWidth">
                     {{ form.contactEmail }}
                 </el-form-item>
-                <el-form-item label="创建日期" :label-width="formLabelWidth">
+                <!-- <el-form-item label="创建日期" :label-width="formLabelWidth">
                     {{ form.crtDate }}
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item label="备注" :label-width="formLabelWidth">
                     {{ form.memo }}
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button @click="modalShow = false">取 消</el-button>
+                <el-button @click="viewModalShow = false">取 消</el-button>
                 <el-button type="primary" @click="save()">确 定</el-button>
             </div>
+        </el-dialog>
+
+        <el-dialog
+            :title="deleteModalTitle"
+            :visible.sync="deleteModalShow"
+            width="30%">
+            <span>确定删除分销商{{ form.distSName }}?</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="deleteModalShow = false">取 消</el-button>
+                <el-button type="primary" @click="delDist()">确 定</el-button>
+            </span>
         </el-dialog>
     </div>
 </template>
 
 <script>
-  import { addDist, deleteDist, existDist, updateDist, pageDists } from '@/api/dist'
+  import { addDist, deleteDist, existDist, updateDist, pageDists, getAllDists } from '@/api/dist'
+  import store from '@/store'
+  import moment from "moment";
 
   export default {
     name: "Dist",
@@ -199,24 +221,26 @@
       return {
         viewModalTitle: '客户信息',
         viewModalShow: false,
+        deleteModalTitle: '删除分销商',
+        deleteModalShow: false,
         modalTitle: '新增客户',
         modalShow: false,
         formLabelWidth: '120px',
         emptyForm: {
-          distId: "",
+        //   distId: "",
           distCode: "",
           distSName: "",
           distFName: "",
-          supDistCode: "",
+          supDistCode: "0",
           contactAdr: "",
           contactPerson: "",
           contactTel: "",
           contactEmail: "",
-          crtDate: "",
+        //   crtDate: "",
           memo: ""
         },
         form: {
-          distId: "",
+        //   distId: "",
           distCode: "",
           distSName: "",
           distFName: "",
@@ -225,7 +249,7 @@
           contactPerson: "",
           contactTel: "",
           contactEmail: "",
-          crtDate: "",
+        //   crtDate: "",
           memo: ""
         },
 
@@ -238,7 +262,9 @@
         totalPage: 0,
         distSname: '',
 
-        saveType: ''
+        saveType: '',
+
+        allDists: []
       }
     },
     mounted() {
@@ -246,8 +272,9 @@
     },
     methods: {
       clickAddDist() {
+        this.getAllDists();
         this.modalTitle = '新增客户';
-        this.form = this.emptyForm;
+        this.form = JSON.parse(JSON.stringify(this.emptyForm));
         this.saveType = 'add';
         this.modalShow = true;
       },
@@ -262,30 +289,45 @@
         this.viewModalShow = true;
       },
       clickUpdateDist(dist) {
+          this.getAllDists();
         this.modalTitle = '编辑客户';
         this.form = dist;
         this.saveType = 'update'
         this.modalShow = true;
       },
       clickDeleteDist(dist) {
-        deleteDist(dist.distId).then(res => {
-          // 刷新分页
-          this.pageDist();
-        });
+        this.form = dist;
+        this.deleteModalShow = true;
       },
       save() {
-        console.log(this.form);
         if (this.saveType == 'add') {
+          if (!this.form.supDistCode) {
+              this.form.supDistCode = '0';
+          }
           addDist(this.form).then(res => {
             this.modalShow = false;
+            // 刷新分页
+            this.pageDist();
           });
         } else if (this.saveType == 'update') {
+          if (!this.form.supDistCode) {
+            this.form.supDistCode = '0';
+          }
           updateDist(this.form).then(res => {
             this.modalShow = false;
+            // 刷新分页
+            this.pageDist();
           })
         } else {
           this.modalShow = false;
         }
+      },
+      delDist() {
+        deleteDist(this.form.distId).then(res => {
+            // 刷新分页
+            this.pageDist();
+            this.deleteModalShow = false;
+        });
       },
       search() {
         this.pageDist();
@@ -296,11 +338,29 @@
           this.totalPage = res.totalPage;
         })
       },
+      getAllDists() {
+          let distCode = store.getters.distCode
+          getAllDists(distCode).then(res => {
+            this.allDists = [{
+                distCode: '0',
+                distName: '顶级经销商'
+            }]
+            this.allDists = this.allDists.concat(res);
+          });
+      },
       handleSizeChange(pageSize) {
         this.pageSize = pageSize;
+        this.pageDist();
       },
       handleCurrentChange(pageIndex) {
         this.pageIndex = pageIndex;
+        this.pageDist();
+      },
+      prevClick() {
+          this.handleCurrentChange(-- this.pageIndex);
+      },
+      nextClick() {
+        this.handleCurrentChange(++ this.pageIndex);
       }
     }
   }
@@ -309,6 +369,8 @@
 <style lang="less" scoped>
     .group-container {
         padding: 20px;
+
+        height: 100%;
     }
 
     /deep/ .el-input {
@@ -338,6 +400,14 @@
 
     .row-div {
         margin-bottom: 10px;
+    }
+
+    .table-div {
+        height: calc(~"100% - 42px");
+
+        .table-info {
+            margin-bottom: 10px
+        }
     }
 
     .row-left {
