@@ -1,6 +1,6 @@
 <template>
   <div class="bottom-charts">
-    <Right-Chart-1 />
+    <Right-Chart-1 ref="rightChart1"/>
     <!-- <BottomRightChart /> -->
     <!-- <dv-decoration-2 class="decoration-1" :reverse="true" style="width:5px;" /> -->
     <!-- <BottomLeftChart /> -->
@@ -21,6 +21,12 @@
     },
     data() {
         return {};
+    },
+    methods: {
+      setData(data) {
+        console.log('bottom', data);
+        this.$refs.rightChart1.setData(data);
+      }
     }
   }
 </script>

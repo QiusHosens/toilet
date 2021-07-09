@@ -12,16 +12,40 @@
 </template>
 
 <script>
+  import { getKspUse } from '@/api/show'
+
   export default {
     name: 'WaterLevelChart',
     data() {
       return {
-        config: {
-          data: [45],
+        config: null,
+        interval: null
+      }
+    },
+    mounted() {
+      this.getData();
+      this.interval = setInterval(() => {
+        this.getData();
+      }, 60 * 1000);
+    },
+    destroyed() {
+      if (this.interval) {
+        clearInterval(this.interval);
+      }
+    },
+    methods: {
+      getData() {
+        getKspUse().then(res => {
+          this.config = this.getConfig(res * 100);
+        })
+      },
+      getConfig(data) {
+        return {
+          data: [ data ],
           shape: 'round',
           waveHeight: 25,
           waveNum: 2
-        }
+        };
       }
     }
   }
@@ -30,7 +54,7 @@
 <style lang="less">
   .top-right-cmp {
     width: 100%;
-    height: 33%;
+    height: 50%;
     display: flex;
     flex-direction: column;
     .chart-name

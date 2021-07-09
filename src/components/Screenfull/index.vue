@@ -9,9 +9,15 @@ import screenfull from 'screenfull'
 
 export default {
   name: 'Screenfull',
+  props: {
+    el: {
+      type: HTMLDivElement,
+      default: null
+    }
+  },
   data() {
     return {
-      isFullscreen: false
+      isFullscreen: false,
     }
   },
   mounted() {
@@ -29,7 +35,11 @@ export default {
         })
         return false
       }
-      screenfull.toggle()
+      if (this.el) {
+        screenfull.toggle(this.el);
+      } else {
+        screenfull.toggle()
+      }
     },
     change() {
       this.isFullscreen = screenfull.isFullscreen

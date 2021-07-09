@@ -30,28 +30,28 @@
                         align="center"
                         header-align="center"
                         prop="distCode"
-                        label="分销商编码"
+                        label="客户编码"
                         width="300">
                 </el-table-column> -->
                 <el-table-column
                         align="center"
                         header-align="center"
                         prop="distSName"
-                        label="分销商名"
+                        label="客户名"
                         width="115">
                 </el-table-column>
                 <el-table-column
                         align="center"
                         header-align="center"
                         prop="distFName"
-                        label="分销商全名"
+                        label="客户全名"
                         width="150">
                 </el-table-column>
                 <el-table-column
                         align="center"
                         header-align="center"
                         prop="supDistName"
-                        label="父级分销商"
+                        label="父级客户"
                         width="150">
                 </el-table-column>
                 <el-table-column
@@ -119,13 +119,13 @@
         <!-- add/edit modal -->
         <el-dialog :title="modalTitle" :visible.sync="modalShow" center width="1000px">
             <el-form :model="form">
-                <el-form-item label="分销商名" :label-width="formLabelWidth">
+                <el-form-item label="客户名" :label-width="formLabelWidth">
                     <el-input v-model="form.distSName" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="分销商全名" :label-width="formLabelWidth">
+                <el-form-item label="客户全名" :label-width="formLabelWidth">
                     <el-input v-model="form.distFName" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="父级分销商" :label-width="formLabelWidth">
+                <el-form-item label="父级客户" :label-width="formLabelWidth">
                     <el-select v-model="form.supDistCode" :disabled="form.distId ? true : false" placeholder="请选择">
                         <el-option
                         v-for="item in allDists"
@@ -160,16 +160,16 @@
         <!-- view model -->
         <el-dialog :title="viewModalTitle" :visible.sync="viewModalShow" center width="1000px">
             <el-form class="view-form" :model="form">
-                <!-- <el-form-item label="分销商编码" :label-width="formLabelWidth">
+                <!-- <el-form-item label="客户编码" :label-width="formLabelWidth">
                     {{ form.distCode }}
                 </el-form-item> -->
-                <el-form-item label="分销商名" :label-width="formLabelWidth">
+                <el-form-item label="客户名" :label-width="formLabelWidth">
                     {{ form.distSName }}
                 </el-form-item>
-                <el-form-item label="分销商全名" :label-width="formLabelWidth">
+                <el-form-item label="客户全名" :label-width="formLabelWidth">
                     {{ form.distFName }}
                 </el-form-item>
-                <el-form-item label="父级分销商" :label-width="formLabelWidth">
+                <el-form-item label="父级客户" :label-width="formLabelWidth">
                     {{ form.supDistName }}
                 </el-form-item>
                 <el-form-item label="联系地址" :label-width="formLabelWidth">
@@ -201,7 +201,7 @@
             :title="deleteModalTitle"
             :visible.sync="deleteModalShow"
             width="30%">
-            <span>确定删除分销商{{ form.distSName }}?</span>
+            <span>确定删除客户{{ form.distSName }}?</span>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="deleteModalShow = false">取 消</el-button>
                 <el-button type="primary" @click="delDist()">确 定</el-button>
@@ -221,7 +221,7 @@
       return {
         viewModalTitle: '客户信息',
         viewModalShow: false,
-        deleteModalTitle: '删除分销商',
+        deleteModalTitle: '删除客户',
         deleteModalShow: false,
         modalTitle: '新增客户',
         modalShow: false,
@@ -343,7 +343,7 @@
           getAllDists(distCode).then(res => {
             this.allDists = [{
                 distCode: '0',
-                distName: '顶级经销商'
+                distName: '顶级客户'
             }]
             this.allDists = this.allDists.concat(res);
           });

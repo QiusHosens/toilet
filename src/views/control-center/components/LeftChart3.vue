@@ -9,6 +9,8 @@
 </template>
 <script>
   import LabelTag from './LabelTag'
+  import { getKspUse } from '@/api/show'
+  
   export default {
     name: 'BottomCharts',
     components: {
@@ -40,6 +42,11 @@
           activeRadius: '80%'
         }
       }
+    },
+    methods: {
+      setData(data) {
+        console.log('warn', data);
+      }
     }
   }
 </script>
@@ -47,7 +54,7 @@
 <style lang="less">
   .top-right-cmp {
     width: 100%;
-    height: 33%;
+    height: 50%;
     display: flex;
     flex-direction: column;
     .chart-name

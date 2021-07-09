@@ -52,8 +52,8 @@ export function logout() {
 export function changePwd(userName, oldPwd, newPwd) {
   return request({
     url: '/Api/User/ChangePwd',
-    method: 'post',
-    data: { userName, oldPwd, newPwd }
+    method: 'get',
+    params: { userName, oldPwd, newPwd }
   })
 }
 
@@ -110,5 +110,13 @@ export function getUserPower(userName) {
     url: '/Api/User/GetUserPowers',
     method: 'get',
     params: { userName }
+  })
+}
+
+export function editPersonal(userName, realName, sex, contactTel, email) {
+  return request({
+    url: '/Api/User/EditPersonal',
+    method: 'post',
+    data: { userName, realName, sex, contactTel, email }
   })
 }

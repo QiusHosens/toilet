@@ -10,8 +10,8 @@
             <div class="row-right">
                 <span class="search-span">人员名称</span>
                 <el-input class="search-input" v-model="userName" size="small" placeholder="请输入人员名称"></el-input>
-                <span class="search-span search-button">分销商</span>
-                <el-select class="search-input" v-model="distCode" placeholder="请选择分销商" clearable>
+                <span class="search-span search-button">客户</span>
+                <el-select class="search-input" v-model="distCode" placeholder="请选择客户" clearable>
                     <el-option
                     v-for="item in allDists"
                     :key="item.distCode"
@@ -19,7 +19,7 @@
                     :value="item.distCode">
                     </el-option>
                 </el-select>
-                <!-- <el-input class="search-input" v-model="distCode" size="small" placeholder="请输入分销商编码"></el-input> -->
+                <!-- <el-input class="search-input" v-model="distCode" size="small" placeholder="请输入客户编码"></el-input> -->
                 <el-button class="search-button" type="primary" size="small"  icon="el-icon-search" @click="search()">搜索</el-button>
             </div>
         </div>
@@ -56,7 +56,7 @@
                         align="center"
                         header-align="center"
                         prop="distName"
-                        label="所属分销商"
+                        label="所属客户"
                         width="300">
                 </el-table-column>
                 <el-table-column
@@ -119,12 +119,13 @@
                         header-align="center"
                         fixed="right"
                         label="操作"
-                        width="160">
+                        width="220">
                     <template slot-scope="scope">
                         <el-button @click="viewUser(scope.row)" type="text" size="small">查看</el-button>
                         <el-button @click="clickUpdateUser(scope.row)" type="text" size="small">编辑</el-button>
                         <el-button @click="clickBindToilet(scope.row)" type="text" size="small">绑定</el-button>
                         <el-button @click="clickDeleteUser(scope.row)" type="text" size="small">删除</el-button>
+                        <el-button @click="clickResetPassword(scope.row)" type="text" size="small">重置密码</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -151,7 +152,7 @@
                 <el-form-item class="item-no-width" label="人员类型" :label-width="formLabelWidth">
                     <el-input class="modal-input" v-model="form.userType" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item class="item-no-width" label="所属分销商" :label-width="formLabelWidth">
+                <el-form-item class="item-no-width" label="所属客户" :label-width="formLabelWidth">
                     <el-select class="modal-input" v-model="form.distCode" placeholder="请选择">
                         <el-option
                         v-for="item in allDists"
@@ -217,7 +218,7 @@
                 <el-form-item label="人员类型" :label-width="formLabelWidth">
                     {{ form.userType }}
                 </el-form-item>
-                <el-form-item label="所属分销商" :label-width="formLabelWidth">
+                <el-form-item label="所属客户" :label-width="formLabelWidth">
                     {{ form.distName }}
                 </el-form-item>
                 <el-form-item label="人员真名" :label-width="formLabelWidth">
@@ -284,7 +285,7 @@
       return {
         viewModalTitle: '人员信息',
         viewModalShow: false,
-        deleteModalTitle: '删除分销商',
+        deleteModalTitle: '删除客户',
         deleteModalShow: false,
         modalTitle: '新增人员',
         modalShow: false,
@@ -384,8 +385,11 @@
         this.modalShow = true;
       },
       clickDeleteUser(user) {
-          this.form = user;
+        this.form = user;
         this.deleteModalShow = true;
+      },
+      clickResetPassword(user) {
+        // TODO
       },
       save() {
         if (this.saveType == 'add') {
@@ -487,7 +491,7 @@
                 }
               } else if (callback) {
                 Message({
-                    message: '请先添加分销商',
+                    message: '请先添加客户',
                     type: 'warn',
                     duration: 5 * 1000
                 });

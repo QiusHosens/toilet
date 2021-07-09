@@ -42,7 +42,7 @@
                         align="center"
                         header-align="center"
                         prop="distName"
-                        label="分销商"
+                        label="客户"
                         width="280">
                 </el-table-column>
                 <el-table-column
@@ -88,7 +88,7 @@
                 <el-form-item label="分组名称" :label-width="formLabelWidth">
                     <el-input v-model="form.groupName" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="分销商" :label-width="formLabelWidth">
+                <el-form-item label="客户" :label-width="formLabelWidth">
                     <el-select v-model="form.distCode" :disabled="form.groupId ? true : false" placeholder="请选择">
                         <el-option
                         v-for="item in allDists"
@@ -117,7 +117,7 @@
                 <el-form-item label="分组名称" :label-width="formLabelWidth">
                     {{ form.groupName }}
                 </el-form-item>
-                <el-form-item label="分销商" :label-width="formLabelWidth">
+                <el-form-item label="客户" :label-width="formLabelWidth">
                     {{ form.distName }}
                 </el-form-item>
                 <el-form-item label="备注" :label-width="formLabelWidth">

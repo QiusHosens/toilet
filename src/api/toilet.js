@@ -46,3 +46,10 @@ export function allToilets() {
     method: 'get'
   })
 }
+
+export function getToiletLocations() {
+  return request({
+    url: '/Api/Toilet/GetToiletLocations',
+    method: 'get'
+  })
+}

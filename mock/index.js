@@ -9,6 +9,7 @@ const dist = require('./dist')
 const group = require('./group')
 const toilet = require('./toilet')
 const report = require('./report')
+const show = require('./show')
 
 const mocks = [
   ...user,
@@ -18,7 +19,8 @@ const mocks = [
   ...dist,
   ...group,
   ...toilet,
-  ...report
+  ...report,
+  ...show
 ]
 
 // for front mock

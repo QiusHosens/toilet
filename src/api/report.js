@@ -59,3 +59,11 @@ export function getStatConsum(tioletId, beginTime, endTime, statType) {
         data: { tioletId, beginTime, endTime, statType }
     })
 }
+
+// 大屏
+export function getStatMasterData() {
+    return request({
+        url: '/Api/DataShow/GetStatMasterData',
+        method: 'get'
+    })
+}

@@ -1,5 +1,5 @@
 <template>
-  <div id="data-view">
+  <div ref="show" id="data-view">
     <!-- <dv-full-screen-container> -->
     <div class="data-container">
       <div class="main-header">
@@ -13,36 +13,61 @@
 
       <dv-border-box-1 class="control-container">
         <dv-border-box-3 class="left-chart-container">
-          <Left-Chart-1 />
-          <Left-Chart-2 />
-          <Left-Chart-3 />
+          <Left-Chart-1 ref="leftChart1"/>
+          <Left-Chart-2 ref="leftChart2"/>
+          <!-- <Left-Chart-3 ref="leftChart3"/> -->
         </dv-border-box-3>
 
         <div class="right-main-container">
           <div class="rmc-top-container">
             <dv-border-box-3 class="rmctc-left-container">
-              <Center-Cmp />
+              <Center-Cmp ref="centerCmp"/>
             </dv-border-box-3>
 
             <div class="rmctc-right-container">
               <dv-border-box-3 class="rmctc-chart-1">
-                <Right-Chart-3 />
+                <Right-Chart-3 ref="rightChart3"/>
               </dv-border-box-3>
             </div>
           </div>
 
           <dv-border-box-4 class="rmc-bottom-container">
-            <Bottom-Charts />
+            <Bottom-Charts ref="bottomChart"/>
           </dv-border-box-4>
         </div>
       </dv-border-box-1>
     </div>
     <!-- </dv-full-screen-container> -->
+
+    <div class="show-screenfull-div" @mouseenter="showScreenfull = true;" @mouseleave="showScreenfull = false;">
+      <screenfull v-if="showScreenfull" :el="el" id="show-screenfull" class="show-screenfull" />
+    </div>
+
+    <div class="switch-warn-show-hide" @mouseenter="showSwitchWarn = true;" @mouseleave="showSwitchWarn = false;">
+      <div class="switch-warn-content" v-if="showSwitchWarn">
+        <div class="switch-warn-text" @click="showWarnList = !showWarnList">
+          {{ showWarnList ? '隐藏告警' : '显示高级' }}
+        </div>
+      </div>
+    </div>
+
+    <div class="warn-list-wrap" v-if="showWarnList">
+      <div class="warn-wrap" v-for="warn in warns" v-bind:key="warn.toiletSn">
+        <div class="warn-content">
+          {{ warn.toiletName }}
+        </div>
+        <!-- <i class="el-icon-circle-close warn-icon" @click="closeWarn(warn.toiletSn)"></i> -->
+      </div>
+    </div>
   </div>
+
 </template>
 
 <script>
 // import { mapGetters } from 'vuex'
+import Screenfull from '@/components/Screenfull'
+import { getAlarm } from '@/api/show'
+
 import LeftChart1 from './components/LeftChart1'
 import LeftChart2 from './components/LeftChart2'
 import LeftChart3 from './components/LeftChart3'
@@ -58,11 +83,20 @@ export default {
       LeftChart3,
       CenterCmp,
       RightChart3,
-      BottomCharts
+      BottomCharts,
+      Screenfull
   },
   data() {
     return {
       // currentRole: 'adminDashboard'
+      warns: [],
+      notifyList: [],
+      el: null,
+      showScreenfull: false,
+      interval: null,
+
+      showWarnList: true,
+      showSwitchWarn: false,
     }
   },
   // computed: {
@@ -74,6 +108,91 @@ export default {
     // if (!this.roles.includes('admin')) {
     //   this.currentRole = 'editorDashboard'
     // }
+  },
+  mounted() {
+    this.getWarn();
+    this.interval = setInterval(() => {
+      this.getWarn();
+    }, 3000);
+
+    this.el = this.$refs.show;
+  },
+  destroyed() {
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
+    for (let warn of this.warns) {
+      if (warn.notify) {
+        warn.notify.close();
+      }
+    }
+  },
+  methods: {
+    getWarn() {
+      getAlarm().then(res => {
+        // 找到告警则不管,未在已经告警中则显示
+        let addWarns = [];
+        let removeWarnSns = [];
+
+        let find = false;
+        for (let alarm of res) {
+          find = false;
+          for (let warn of this.warns) {
+            if (warn.toiletSn == alarm.toiletSn) {
+              find = true;
+              break;
+            }
+          }
+
+          if (!find) {
+            this.notifyList.push(alarm);
+
+            addWarns.push(alarm);
+          }
+        }
+        // 未在当前告警中则删除
+        find = false;
+        for (let warn of this.warns) {
+          find = false;
+          for (let alarm of res) {
+            if (warn.toiletSn == alarm.toiletSn) {
+              find = true;
+              break;
+            }
+          }
+
+          if (!find) {
+            warn.notify.close();
+
+            removeWarnSns.push(warn.toiletSn);
+          }
+        }
+
+        this.warns = this.warns.concat(addWarns);
+
+        this.warns = this.warns.filter(warn => removeWarnSns.indexOf(warn.toiletSn) < 0);
+
+        // this.showNotify();
+      });
+    },
+    showNotify() {
+      if (this.notifyList.length > 0) {
+        let alarm = this.notifyList.pop();
+        alarm.notify = this.$notify({
+          title: '告警',
+          message: alarm.toiletName,
+          duration: 0,
+          showClose: false,
+          offset: 100
+        });
+        setTimeout(() => {
+          this.showNotify();
+        }, 100);
+      }
+    },
+    closeWarn(toiletSn) {
+      this.warns = this.warns.filter(warn => toiletSn != warn.toiletSn);
+    }
   }
 }
 </script>
@@ -200,6 +319,70 @@ export default {
         transform: translateX(-50%);
       }
 
+    }
+  }
+
+  .show-screenfull-div {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    width: 16px;
+    height: 16px;
+  }
+
+  .warn-list-wrap {
+    position: absolute;
+    width: 200px;
+    height: 100%;
+    right: 0;
+    top: 0;
+    opacity: 0.7;
+
+    .warn-wrap {
+      width: 100%;
+      height: 80px;
+      background: #010D30;
+      border: 2px solid #E6A23C;
+      color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 10px 10px 0 rgba(0,0,0,.24);
+      padding: 20px;
+
+      display: flex;
+      // justify-content: center;
+      align-items: center;
+      position: relative;
+
+      .warn-icon {
+        position: absolute;
+        right: 10px;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .switch-warn-show-hide {
+    position: absolute;
+    top: 0;
+    right: 0px;
+    width: 15px;
+    height: 100%;
+    z-index: 9;
+
+    .switch-warn-content {
+      color: white;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .switch-warn-text {
+        width: 100%;
+        height: 72px;
+        color: #2593FC;
+        cursor: pointer;
+      }
     }
   }
 </style>

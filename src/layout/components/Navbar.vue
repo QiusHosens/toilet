@@ -24,8 +24,8 @@
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
-          <router-link to="/controlCenter">
-            <el-dropdown-item>调度指挥中心</el-dropdown-item>
+          <router-link to="/personalCenter">
+            <el-dropdown-item>个人中心</el-dropdown-item>
           </router-link>
           <!--<router-link to="/">-->
             <!--<el-dropdown-item>Dashboard</el-dropdown-item>-->

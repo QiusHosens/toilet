@@ -25,14 +25,14 @@
                         type="selection"
                         width="55">
                 </el-table-column>
-                <!-- <el-table-column
+                <el-table-column
                         fixed
                         align="center"
                         header-align="center"
                         prop="toiletCode"
                         label="公厕编码"
                         width="300">
-                </el-table-column> -->
+                </el-table-column>
                 <el-table-column
                         fixed
                         align="center"
@@ -209,6 +209,7 @@
                 <el-form-item label="位置(经度/纬度)" :label-width="formLabelWidth">
                     <el-input class="position-input" v-model="form.longitude" autocomplete="off"></el-input>
                     <el-input class="position-input position-input-right" v-model="form.latitude" autocomplete="off"></el-input>
+                    <div class="location-div"><i class="el-icon-location location-i" @click="showMapPosition()"></i></div>
                 </el-form-item>
                 <el-form-item label="蹲位数量(男/女/其他)" :label-width="formLabelWidth">
                     <el-input class="seat-input" v-model="form.numSeatMan" autocomplete="off"></el-input>
@@ -231,6 +232,9 @@
         <!-- view model -->
         <el-dialog :title="viewModalTitle" :visible.sync="viewModalShow" center width="1000px">
             <el-form class="view-form" :model="form">
+                <el-form-item label="公厕编码" :label-width="formLabelWidth">
+                    {{ form.toiletCode }}
+                </el-form-item>
                 <el-form-item label="公厕名称" :label-width="formLabelWidth">
                     {{ form.toiletName }}
                 </el-form-item>
@@ -256,6 +260,7 @@
                 </el-form-item>
                 <el-form-item label="位置(经度/纬度)" :label-width="formLabelWidth">
                     {{ form.longitude }}, {{ form.latitude }}
+                    <div class="location-div"><i class="el-icon-location location-i" @click="showMapPosition()"></i></div>
                 </el-form-item>
                 <el-form-item label="蹲位数量(男/女/其他)" :label-width="formLabelWidth">
                     {{ form.numSeatMan }}/{{ form.numSeatFemale }}/{{ form.numSeatThird }}
@@ -279,6 +284,14 @@
                 <el-button type="primary" @click="delToilet()">确 定</el-button>
             </span>
         </el-dialog>
+
+        <el-dialog
+            :title="positionMapTitle"
+            :visible.sync="positionMapShow"
+            width="1000px"
+            @opened="getMapPosition()">
+            <div id="device-map" class="device-map"></div>
+        </el-dialog>
     </div>
 </template>
 
@@ -298,6 +311,8 @@
         deleteModalTitle: '删除公厕',
         deleteModalShow: false,
         modalTitle: '新增公厕',
+        positionMapTitle: '位置查看',
+        positionMapShow: false,
         modalShow: false,
         formLabelWidth: '150px',
         emptyForm: {
@@ -455,6 +470,36 @@
       },
       nextClick() {
         this.handleCurrentChange(++ this.pageIndex);
+      },
+      showMapPosition() {
+        if (this.form.latitude > -180 && this.form.latitude < 180
+            && this.form.longitude > -90 && this.form.longitude < 90) {
+            this.positionMapShow = true;
+        } else {
+            Message({
+                message: '经度请限制在-180~180之间,纬度请限制在-90~90之间',
+                type: 'error',
+                duration: 5 * 1000
+            });
+        }
+      },
+      getMapPosition() {
+        let position = new qq.maps.LatLng(this.form.latitude, this.form.longitude);
+        let map = new qq.maps.Map('device-map', {
+            mapStyleId: 'style1',  // 该key绑定的style1对应于经典地图样式，若未绑定将弹出无权限提示窗
+            zoomControl: false,
+            panControl: false,
+            zoom: 15,
+            center: position
+        });
+
+        var listener = qq.maps.event.addListener(map, 'tilesloaded', () => {
+                var marker = new qq.maps.Marker({
+                    position: position,
+                    map: map
+                });
+            }
+        );
       }
     }
   }
@@ -534,7 +579,7 @@
     }
 
     .position-input {
-        width: 140px;
+        width: 120px;
     }
 
     .position-input-right {
@@ -551,5 +596,25 @@
 
     .view-form {
         display: inline-block;
+    }
+
+    .location-div {
+        float: right;
+        width: 28px;
+        height: 28px;
+        margin-top: 4px;
+        margin-right: 30px;
+
+        .location-i {
+            cursor: pointer;
+
+            font-size: 28px;
+            color: #60b960;
+        }
+    }
+
+    .device-map {
+        width: 100%;
+        height: 400px;
     }
 </style>

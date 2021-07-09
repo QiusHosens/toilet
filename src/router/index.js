@@ -84,6 +84,25 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/control',
+    component: Layout,
+    meta: { title: '大屏展示', icon: 'dashboard', affix: false },
+    children: [
+      {
+        path: 'controlCenter',
+        component: () => import('@/views/control-center/index'),
+        name: '调度指挥中心',
+        meta: { title: '调度指挥中心', icon: 'dashboard', affix: false }
+      },
+      {
+        path: 'toiletCenter',
+        component: () => import('@/views/device/control'),
+        name: '公厕展示',
+        meta: { title: '公厕展示', icon: 'dashboard', affix: false }
+      }
+    ]
+  },
+  {
     path: '/group',
     component: Layout,
     children: [
@@ -96,15 +115,15 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/controlCenter',
+    path: '/personalCenter',
     component: Layout,
     hidden: true,
     children: [
       {
         path: '/',
-        component: () => import('@/views/control-center/index'),
-        name: '智慧公厕调度指挥中心',
-        meta: { title: '智慧公厕调度指挥中心', icon: 'dashboard', affix: false }
+        component: () => import('@/views/user/personal'),
+        name: '个人中心',
+        meta: { title: '个人中心', icon: 'dashboard', affix: false }
       }
     ]
   },
@@ -112,14 +131,7 @@ export const constantRoutes = [
     path: '/user',
     component: Layout,
     name: '人员管理',
-    meta: { title: '人员管理', icon: 'peoples', affix: false },
     children: [
-      {
-        path: 'group',
-        component: () => import('@/views/user/group'),
-        name: '分组管理',
-        meta: { title: '分组管理', icon: 'groups', affix: false }
-      },
       {
         path: 'people',
         component: () => import('@/views/user/user'),
@@ -131,7 +143,14 @@ export const constantRoutes = [
   {
     path: '/device',
     component: Layout,
+    meta: { title: '公厕管理', icon: 'toilet', affix: false },
     children: [
+      {
+        path: 'group',
+        component: () => import('@/views/user/group'),
+        name: '分组管理',
+        meta: { title: '分组管理', icon: 'groups', affix: false }
+      },
       {
         path: 'device',
         component: () => import('@/views/device/index'),
