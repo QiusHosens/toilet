@@ -105,7 +105,7 @@
           this.markerInfos.forEach(markerInfo => {
             this.initMarker(markerInfo);
           });
-          this.map.fitBounds(this.getBounds(this.markerInfos));
+          // this.map.fitBounds(this.getBounds(this.markerInfos));
         }
       },
       initMarker(markerInfo) {

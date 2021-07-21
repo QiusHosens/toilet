@@ -8,11 +8,11 @@
       <!-- <dv-water-level-pond :config="config" /> -->
       <div class="toilet-chart-content">
         <div class="toilet-chart-content-title">男</div>
-        <dv-percent-pond class="toilet-chart-content-detail" :config="manConfig"/>
+        <dv-percent-pond v-if="show" class="toilet-chart-content-detail" :config="manConfig"/>
       </div>
       <div class="toilet-chart-content">
         <div class="toilet-chart-content-title">女</div>
-        <dv-percent-pond class="toilet-chart-content-detail" :config="womanConfig"/>
+        <dv-percent-pond v-if="show" class="toilet-chart-content-detail" :config="womanConfig"/>
       </div>
       <!-- <dv-charts :option="option" /> -->
     </div>
@@ -29,10 +29,18 @@
       return {
         manConfig: null,
         womanConfig: null,
-        interval: null
+        interval: null,
+        show: true,
       }
     },
     mounted() {
+      window.onresize = e => {
+          // this.isFull = !this.isFull;
+          this.show = false;
+          setTimeout(() => {
+            this.show = true;
+          });
+      };
       this.getData();
       this.interval = setInterval(() => {
         this.getData();

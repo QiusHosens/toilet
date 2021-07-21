@@ -45,7 +45,7 @@
                 <el-tab-pane label="氨气" name="nh3">
                     <!-- <line-chart class-name="nh3-chart" :option="nh3Option" /> -->
                 </el-tab-pane>
-                <el-tab-pane label="噪音" name="voc">
+                <el-tab-pane label="异味" name="voc">
                     <!-- <line-chart class-name="voc-chart" :option="vocOption" /> -->
                 </el-tab-pane>
                 <el-tab-pane label="二氧化碳" name="co2">
@@ -78,7 +78,7 @@
                             <el-form-item label="男厕氨气">
                                 <span>{{ props.row.manNh3 }}</span>
                             </el-form-item>
-                            <el-form-item label="男厕噪音">
+                            <el-form-item label="男厕异味">
                                 <span>{{ props.row.manVoc }}</span>
                             </el-form-item>
                             <el-form-item label="男厕二氧化碳">
@@ -96,7 +96,7 @@
                             <el-form-item label="女厕氨气">
                                 <span>{{ props.row.womanNh3 }}</span>
                             </el-form-item>
-                            <el-form-item label="女厕噪音">
+                            <el-form-item label="女厕异味">
                                 <span>{{ props.row.womanVoc }}</span>
                             </el-form-item>
                             <el-form-item label="女厕二氧化碳">
@@ -123,7 +123,7 @@
                             <el-form-item v-if="hasThird" label="第三厕氨气">
                                 <span>{{ props.row.thirdNh3 }}</span>
                             </el-form-item>
-                            <el-form-item v-if="hasThird" label="第三厕噪音">
+                            <el-form-item v-if="hasThird" label="第三厕异味">
                                 <span>{{ props.row.thirdVoc }}</span>
                             </el-form-item>
                             <el-form-item v-if="hasThird" label="第三厕二氧化碳">
@@ -400,7 +400,7 @@
                 let pm25Legend = ['男厕PM2.5', '女厕PM2.5'];
                 let h2sLegend = ['男厕硫化氢', '女厕硫化氢'];
                 let nh3Legend = ['男厕氨气', '女厕氨气'];
-                let vocLegend = ['男厕噪音', '女厕噪音'];
+                let vocLegend = ['男厕异味', '女厕异味'];
                 let co2Legend = ['男厕二氧化碳', '女厕二氧化碳'];
                 let ch2oLegend = ['男厕甲醛', '女厕甲醛'];
                 let luxLegend = ['男厕照明', '女厕照明'];
@@ -472,12 +472,12 @@
 
                 let vocSeries = [
                     {
-                        name: '男厕噪音',
+                        name: '男厕异味',
                         type: 'line',
                         data: manVocDatas
                     },
                     {
-                        name: '女厕噪音',
+                        name: '女厕异味',
                         type: 'line',
                         data: womanVocDatas
                     }
@@ -530,7 +530,7 @@
                     pm25Legend.push('第三厕PM2.5');
                     h2sLegend.push('第三厕硫化氢');
                     nh3Legend.push('第三厕氨气');
-                    vocLegend.push('第三厕噪音');
+                    vocLegend.push('第三厕异味');
                     co2Legend.push('第三厕二氧化碳');
                     ch2oLegend.push('第三厕甲醛');
                     luxLegend.push('第三厕照明');
@@ -566,7 +566,7 @@
                     });
 
                     vocSeries.push({
-                        name: '第三厕噪音',
+                        name: '第三厕异味',
                         type: 'line',
                         data: thirdVocDatas
                     });
@@ -595,7 +595,7 @@
                 this.pm25Option = this.getOption(xAxis, pm25Legend, pm25Series, 'PM2.5', '摄氏度');
                 this.h2sOption = this.getOption(xAxis, h2sLegend, h2sSeries, '硫化氢', '摄氏度');
                 this.nh3Option = this.getOption(xAxis, nh3Legend, nh3Series, '氨气', '摄氏度');
-                this.vocOption = this.getOption(xAxis, vocLegend, vocSeries, '噪音', '摄氏度');
+                this.vocOption = this.getOption(xAxis, vocLegend, vocSeries, '异味', '摄氏度');
                 this.co2Option = this.getOption(xAxis, co2Legend, co2Series, '二氧化碳', '摄氏度');
                 this.ch2oOption = this.getOption(xAxis, ch2oLegend, ch2oSeries, '甲醛', '摄氏度');
                 this.luxOption = this.getOption(xAxis, luxLegend, luxSeries, '照明', '摄氏度');

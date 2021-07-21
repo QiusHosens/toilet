@@ -1,13 +1,13 @@
 <template>
   <div class="scroll-board">
     <div class="scroll-switch">
-      <span>
-        仅显示低于30%的数据
-      </span>
-      <el-switch class="switch-div"
+      <el-switch
         v-model="onlyShowLower"
         @change="switchData">
       </el-switch>
+      <span class="switch-div">
+        仅显示低于30%的数据
+      </span>
     </div>
     <div class="scroll-content">
       <dv-scroll-board :config="config" />
@@ -65,7 +65,7 @@
       switchData(value) {
         let data = [];
         if (value) {
-          data = this.data.filter(one => one[2] < 30);
+          data = this.data.filter(one => Number(one[2].replace('%', '')) < 30);
         } else {
           data = this.data;
         }

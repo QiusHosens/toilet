@@ -54,7 +54,15 @@
     <div class="warn-list-wrap" v-if="showWarnList">
       <div class="warn-wrap" v-for="warn in warns" v-bind:key="warn.toiletSn">
         <div class="warn-content">
-          {{ warn.toiletName }}
+          <div class="warn-title">
+            <svg-icon icon-class="warns"/>
+            告警
+          </div>
+          <div class="warn-content-detail">
+            <div class="warn-content-row"><div class="warn-content-name">厕所名:</div><div class="warn-content-content" :title="warn.toiletName">{{ warn.toiletName }}</div></div>
+            <div class="warn-content-row" v-if="warn.switchCode != 0"><div class="warn-content-name">蹲位:</div><div class="warn-content-content">{{ warn.switchCode }}</div></div>
+            <div class="warn-content-row"><div class="warn-content-name">告警类型:</div><div class="warn-content-content">{{ warn.type == 1 ? '烟雾' : warn.type == 2 ? 'SOS' : warn.type == 4 ? '下水堵塞' : '' }}</div></div>
+          </div>
         </div>
         <!-- <i class="el-icon-circle-close warn-icon" @click="closeWarn(warn.toiletSn)"></i> -->
       </div>
@@ -336,21 +344,22 @@ export default {
     height: 100%;
     right: 0;
     top: 0;
-    opacity: 0.7;
+    opacity: 0.9;
 
     .warn-wrap {
       width: 100%;
       height: 80px;
-      background: #010D30;
-      border: 2px solid #E6A23C;
+      background: #E6A23C;
+      border: 2px solid #fff;
       color: #fff;
       border-radius: 5px;
       box-shadow: 0 10px 10px 0 rgba(0,0,0,.24);
-      padding: 20px;
+      // padding: 20px;
+      margin-top: 5px;
 
-      display: flex;
+      // display: flex;
       // justify-content: center;
-      align-items: center;
+      // align-items: center;
       position: relative;
 
       .warn-icon {
@@ -373,15 +382,42 @@ export default {
       color: white;
       width: 100%;
       height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      // display: flex;
+      // justify-content: center;
+      // align-items: center;
+
+      .warn-title {
+
+      }
 
       .switch-warn-text {
         width: 100%;
         height: 72px;
         color: #2593FC;
         cursor: pointer;
+      }
+    }
+  }
+
+  .warn-content-detail {
+    padding: 0 10px;
+    
+    .warn-content-row {
+      width: 100%;
+      float: left;
+
+      .warn-content-name {
+        float: left;
+        width: 80px;
+      }
+
+      .warn-content-content {
+        float: left;
+        width: calc(~"100% - 80px");
+
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
       }
     }
   }

@@ -224,8 +224,6 @@
 
                   infoWin.setPosition(event.latLng);
 
-                  debugger
-
                   this.$router.push({
                     path: '/control/toiletCenter',
                     query: {
@@ -253,7 +251,6 @@
               this.map.setCenter(this.getLatLng(lat, lng));
             },
             setZoom(zoom) {
-              this
               if (this.zoom) {
                 this.map.setZoom(this.zoom);
               }
@@ -273,7 +270,7 @@
                 this.markerInfos.forEach(markerInfo => {
                   this.initMarker(markerInfo);
                 });
-                this.map.fitBounds(this.getBounds(this.markerInfos));
+                // this.map.fitBounds(this.getBounds(this.markerInfos));
               }
             },
             initMarker(markerInfo) {
