@@ -5,12 +5,19 @@
 </template>
 
 <script>
+  import { getToiletLocations } from '@/api/toilet';
 
   export default {
     data() {
       return {
-        longitude: "",
-        latitude: ""
+        map: null,
+        center: [], // 纬度,经度
+        zoom: null,
+        markers: [],
+        markerInfos: [],
+
+        initDataSuccess: false,
+        initMapSuccess: false
       };
     },
 

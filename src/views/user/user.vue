@@ -50,6 +50,9 @@
                         prop="userType"
                         label="人员类型"
                         width="100">
+                        <template slot-scope="scope">
+                            {{ scope.row.userType == '0' ? '管理员' : '非管理员' }}
+                        </template>
                 </el-table-column>
                 <el-table-column
                         fixed
@@ -150,7 +153,14 @@
                     <el-input class="modal-input" v-model="form.userName" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item class="item-no-width" label="人员类型" :label-width="formLabelWidth">
-                    <el-input class="modal-input" v-model="form.userType" autocomplete="off"></el-input>
+                    <el-select class="modal-input" v-model="form.userType" placeholder="请选择">
+                        <el-option
+                                v-for="item in userTypes"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item class="item-no-width" label="所属客户" :label-width="formLabelWidth">
                     <el-select class="modal-input" v-model="form.distCode" placeholder="请选择">
@@ -216,7 +226,7 @@
                     {{ form.userName }}
                 </el-form-item>
                 <el-form-item label="人员类型" :label-width="formLabelWidth">
-                    {{ form.userType }}
+                    {{ form.userType == '0' ? '管理员' : '非管理员' }}
                 </el-form-item>
                 <el-form-item label="所属客户" :label-width="formLabelWidth">
                     {{ form.distName }}
@@ -303,10 +313,17 @@
             value: '0',
             label: '查看员'
         }],
+        userTypes: [{
+            value: '0',
+            label: '管理员'
+        }, {
+            value: '1',
+            label: '非管理员'
+        }],
         emptyForm: {
         //   userId: "",
           userName: "",
-          userType: "",
+          userType: "1",
           distCode: "",
           realName: "",
           duty: "",

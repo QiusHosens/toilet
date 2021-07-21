@@ -102,63 +102,50 @@ export const constantRoutes = [
       }
     ]
   },
-  {
-    path: '/group',
-    component: Layout,
-    children: [
-      {
-        path: 'group',
-        component: () => import('@/views/dist/index'),
-        name: '客户管理',
-        meta: { title: '客户管理', icon: 'group', affix: false }
-      }
-    ]
-  },
-  {
-    path: '/personalCenter',
-    component: Layout,
-    hidden: true,
-    children: [
-      {
-        path: '/',
-        component: () => import('@/views/user/personal'),
-        name: '个人中心',
-        meta: { title: '个人中心', icon: 'dashboard', affix: false }
-      }
-    ]
-  },
-  {
-    path: '/user',
-    component: Layout,
-    name: '人员管理',
-    children: [
-      {
-        path: 'people',
-        component: () => import('@/views/user/user'),
-        name: '用户管理',
-        meta: { title: '用户管理', icon: 'singleUser', affix: false }
-      }
-    ]
-  },
-  {
-    path: '/device',
-    component: Layout,
-    meta: { title: '公厕管理', icon: 'toilet', affix: false },
-    children: [
-      {
-        path: 'group',
-        component: () => import('@/views/user/group'),
-        name: '分组管理',
-        meta: { title: '分组管理', icon: 'groups', affix: false }
-      },
-      {
-        path: 'device',
-        component: () => import('@/views/device/index'),
-        name: '公厕管理',
-        meta: { title: '公厕管理', icon: 'publicToilet', affix: false }
-      }
-    ]
-  },
+  // {
+  //   path: '/group',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'group',
+  //       component: () => import('@/views/dist/index'),
+  //       name: '客户管理',
+  //       meta: { title: '客户管理', icon: 'group', affix: false }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/user',
+  //   component: Layout,
+  //   name: '人员管理',
+  //   children: [
+  //     {
+  //       path: 'people',
+  //       component: () => import('@/views/user/user'),
+  //       name: '用户管理',
+  //       meta: { title: '用户管理', icon: 'singleUser', affix: false }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/device',
+  //   component: Layout,
+  //   meta: { title: '公厕管理', icon: 'toilet', affix: false },
+  //   children: [
+  //     {
+  //       path: 'group',
+  //       component: () => import('@/views/user/group'),
+  //       name: '分组管理',
+  //       meta: { title: '分组管理', icon: 'groups', affix: false }
+  //     },
+  //     {
+  //       path: 'device',
+  //       component: () => import('@/views/device/index'),
+  //       name: '公厕管理',
+  //       meta: { title: '公厕管理', icon: 'publicToilet', affix: false }
+  //     }
+  //   ]
+  // },
   {
       path: '/report',
       component: Layout,
@@ -189,18 +176,18 @@ export const constantRoutes = [
               name: '耗材',
               meta: { title: '耗材', icon: 'consumables', affix: false }
           },
-          {
-              path: 'deodorizer',
-              component: () => import('@/views/report/deodorizer'),
-              name: '除臭机',
-              meta: { title: '除臭机', icon: 'deodorizer', affix: false }
-          },
-          {
-              path: 'warn',
-              component: () => import('@/views/report/warn'),
-              name: '报警事件',
-              meta: { title: '报警事件', icon: 'warn', affix: false }
-          },
+          // {
+          //     path: 'deodorizer',
+          //     component: () => import('@/views/report/deodorizer'),
+          //     name: '除臭机',
+          //     meta: { title: '除臭机', icon: 'deodorizer', affix: false }
+          // },
+          // {
+          //     path: 'warn',
+          //     component: () => import('@/views/report/warn'),
+          //     name: '报警事件',
+          //     meta: { title: '报警事件', icon: 'warn', affix: false }
+          // },
           {
               path: 'energyConsumption',
               component: () => import('@/views/report/energy-consumption'),
@@ -271,6 +258,19 @@ export const constantRoutes = [
   //       meta: { title: 'Profile', icon: 'user', noCache: true }
   //     }
   //   ]
+  },
+  {
+    path: '/personal',
+    component: Layout,
+    // hidden: true,
+    children: [
+      {
+        path: 'center',
+        component: () => import('@/views/user/personal'),
+        name: '个人中心',
+        meta: { title: '个人中心', icon: 'singleUser', affix: false }
+      }
+    ]
   }
 ]
 
@@ -279,6 +279,50 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
+  {
+    path: '/group',
+    component: Layout,
+    children: [
+      {
+        path: 'group',
+        component: () => import('@/views/dist/index'),
+        name: '客户管理',
+        meta: { title: '客户管理', icon: 'group', affix: false, roles: ['admin'] }
+      }
+    ]
+  },
+  {
+    path: '/user',
+    component: Layout,
+    name: '人员管理',
+    children: [
+      {
+        path: 'people',
+        component: () => import('@/views/user/user'),
+        name: '用户管理',
+        meta: { title: '用户管理', icon: 'user-manage', affix: false, roles: ['admin'] }
+      }
+    ]
+  },
+  {
+    path: '/device',
+    component: Layout,
+    meta: { title: '公厕管理', icon: 'toilet', affix: false, roles: ['admin'] },
+    children: [
+      {
+        path: 'group',
+        component: () => import('@/views/user/group'),
+        name: '分组管理',
+        meta: { title: '分组管理', icon: 'groups', affix: false, roles: ['admin'] }
+      },
+      {
+        path: 'device',
+        component: () => import('@/views/device/index'),
+        name: '公厕管理',
+        meta: { title: '公厕管理', icon: 'publicToilet', affix: false, roles: ['admin'] }
+      }
+    ]
+  },
   // {
   //   path: '/permission',
   //   component: Layout,

@@ -67,3 +67,21 @@ export function getStatMasterData() {
         method: 'get'
     })
 }
+
+// 评价统计
+export function getStatEvaluate(tioletId, beginTime, endTime, statType) {
+    return request({
+        url: '/Api/Statistcs/GetStatEvaluate',
+        method: 'post',
+        data: { tioletId, beginTime, endTime, statType }
+    })
+}
+
+// 打扫记录
+export function getStatClear(tioletId, beginTime, endTime) {
+    return request({
+        url: '/Api/Statistcs/GetStatClear',
+        method: 'post',
+        data: { tioletId, beginTime, endTime }
+    })
+}

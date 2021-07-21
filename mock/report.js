@@ -160,47 +160,143 @@ const responseReportConsum = {  "data": [
 {      "statTime": "202106",      "consumName": "飘香机-1",      "useTimes": 335,      "replaceTimes": 0    }
 ],  "errcode": 0,  "errmsg": "获取耗材统计成功",  "success": true}
 
+const responseReportStatEvaluate = {  
+    "data": [    
+        {      
+            "statTime": "202104",      
+            "data": [        
+                {          
+                    "statTime": "202104",          
+                    "evaType": 0,          
+                    "evaText": "差",          
+                    "evaLevel": 1,          
+                    "evaCount": 3        
+                },
+{          "statTime": "202104",          "evaType": 0,          "evaText": "一般",          "evaLevel": 2,          "evaCount": 5        },
+{          "statTime": "202104",          "evaType": 0,          "evaText": "好",          "evaLevel": 3,          "evaCount": 4        },
+{          "statTime": "202104",          "evaType": 0,          "evaText": "非常好",          "evaLevel": 4,          "evaCount": 6        }
+]
+},
+{      "statTime": "202105",      "data": [        {          "statTime": "202105",          "evaType": 0,          "evaText": "差",          "evaLevel": 1,          "evaCount": 4        },
+{          "statTime": "202105",          "evaType": 0,          "evaText": "一般",          "evaLevel": 2,          "evaCount": 4        },
+{          "statTime": "202105",          "evaType": 0,          "evaText": "好",          "evaLevel": 3,          "evaCount": 2        },
+{          "statTime": "202105",          "evaType": 0,          "evaText": "非常好",          "evaLevel": 4,          "evaCount": 2        }
+]
+},
+{      "statTime": "202106",      "data": [        {          "statTime": "202106",          "evaType": 0,          "evaText": "差",          "evaLevel": 1,          "evaCount": 4        },
+{          "statTime": "202106",          "evaType": 0,          "evaText": "一般",          "evaLevel": 2,          "evaCount": 5        },
+{          "statTime": "202106",          "evaType": 0,          "evaText": "好",          "evaLevel": 3,          "evaCount": 4        },
+{          "statTime": "202106",          "evaType": 0,          "evaText": "非常好",          "evaLevel": 4,          "evaCount": 7        }
+]
+},
+{      "statTime": "202107",      "data": [        {          "statTime": "202107",          "evaType": 0,          "evaText": "差",          "evaLevel": 1,          "evaCount": 6        },
+{          "statTime": "202107",          "evaType": 0,          "evaText": "一般",          "evaLevel": 2,          "evaCount": 3        },
+{          "statTime": "202107",          "evaType": 0,          "evaText": "好",          "evaLevel": 3,          "evaCount": 3        },
+{          "statTime": "202107",          "evaType": 0,          "evaText": "非常好",          "evaLevel": 4,          "evaCount": 12        }
+]
+},
+{      "statTime": "202108",      "data": [        {          "statTime": "202108",          "evaType": 0,          "evaText": "差",          "evaLevel": 1,          "evaCount": 3        },
+{          "statTime": "202108",          "evaType": 0,          "evaText": "一般",          "evaLevel": 2,          "evaCount": 3        },
+{          "statTime": "202108",          "evaType": 0,          "evaText": "好",          "evaLevel": 3,          "evaCount": 6        },
+{          "statTime": "202108",          "evaType": 0,          "evaText": "非常好",          "evaLevel": 4,          "evaCount": 15        }
+]
+},
+{      "statTime": "202109",      "data": [        {          "statTime": "202109",          "evaType": 0,          "evaText": "差",          "evaLevel": 1,          "evaCount": 3        },
+{          "statTime": "202109",          "evaType": 0,          "evaText": "一般",          "evaLevel": 2,          "evaCount": 6        },
+{          "statTime": "202109",          "evaType": 0,          "evaText": "好",          "evaLevel": 3,          "evaCount": 7        },
+{          "statTime": "202109",          "evaType": 0,          "evaText": "非常好",          "evaLevel": 4,          "evaCount": 17        }
+]
+},
+{      "statTime": "202110",      "data": [        {          "statTime": "202110",          "evaType": 0,          "evaText": "差",          "evaLevel": 1,          "evaCount": 12        },
+{          "statTime": "202110",          "evaType": 0,          "evaText": "一般",          "evaLevel": 2,          "evaCount": 24        },
+{          "statTime": "202110",          "evaType": 0,          "evaText": "好",          "evaLevel": 3,          "evaCount": 9        },
+{          "statTime": "202110",          "evaType": 0,          "evaText": "非常好",          "evaLevel": 4,          "evaCount": 21        }
+]
+},
+{      "statTime": "202111",      "data": [        {          "statTime": "202111",          "evaType": 0,          "evaText": "差",          "evaLevel": 1,          "evaCount": 6        },
+{          "statTime": "202111",          "evaType": 0,          "evaText": "一般",          "evaLevel": 2,          "evaCount": 58        },
+{          "statTime": "202111",          "evaType": 0,          "evaText": "好",          "evaLevel": 3,          "evaCount": 15        },
+{          "statTime": "202111",          "evaType": 0,          "evaText": "非常好",          "evaLevel": 4,          "evaCount": 58        }
+]
+},
+{      "statTime": "202112",      "data": [        {          "statTime": "202112",          "evaType": 0,          "evaText": "差",          "evaLevel": 1,          "evaCount": 16        },
+{          "statTime": "202112",          "evaType": 0,          "evaText": "一般",          "evaLevel": 2,          "evaCount": 14        },
+{          "statTime": "202112",          "evaType": 0,          "evaText": "好",          "evaLevel": 3,          "evaCount": 7        }
+]
+}
+],  "errcode": 0,  "errmsg": "获取评价统计成功",  "success": true}
+
+const responseReportStatClear = {  
+    "data": [    
+        {      
+            "toiletSn": "abc123456781",      
+            "toiletName": null,      
+            "toiletType": 1,      
+            "startTime": 1619506000000,      
+            "timeLimited": 9,      
+            "endTime": 0,      
+            "clearName": null    
+        },
+        {      "toiletSn": "abc123456781",      "toiletName": null,      "toiletType": 1,      "startTime": 1619506001000,      "timeLimited": 6,      "endTime": 0,      "clearName": null    },
+        {      "toiletSn": "abc123456781",      "toiletName": null,      "toiletType": 1,      "startTime": 1619506002000,      "timeLimited": 2,      "endTime": 0,      "clearName": null    },
+        {      "toiletSn": "abc123456781",      "toiletName": null,      "toiletType": 1,      "startTime": 1619506003000,      "timeLimited": 8,      "endTime": 0,      "clearName": null    }
+],  "errcode": 0,  "errmsg": "获取打扫记录成功",  "success": true}
+
 module.exports = [
     {
       url: '/Api/Statistcs/GetStatFlow',
-      type: 'get',
+      type: 'post',
       response: param => {
         return responseReportFlow;
       }
     },
     {
         url: '/Api/Statistcs/GetStatKsp',
-        type: 'get',
+        type: 'post',
         response: param => {
             return responseReportKsp;
         }
     },
     {
         url: '/Api/Statistcs/GetStatWaterAndElec',
-        type: 'get',
+        type: 'post',
         response: param => {
             return responseReportStatWaterAndElec;
         }
     },
     {
         url: '/Api/Statistcs/GetStatEnv',
-        type: 'get',
+        type: 'post',
         response: param => {
             return responseReportStatEnv;
         }
     },
     {
         url: '/Api/Statistcs/GetStatConsumResidue',
-        type: 'get',
+        type: 'post',
         response: param => {
             return responseReportConsumResidue;
         }
     },
     {
         url: '/Api/Statistcs/GetStatConsum',
-        type: 'get',
+        type: 'post',
         response: param => {
             return responseReportConsum;
+        }
+    },
+    {
+        url: '/Api/Statistcs/GetStatEvaluate',
+        type: 'post',
+        response: param => {
+            return responseReportStatEvaluate;
+        }
+    },
+    {
+        url: '/Api/Statistcs/GetStatClear',
+        type: 'post',
+        response: param => {
+            return responseReportStatClear;
         }
     }
 ]

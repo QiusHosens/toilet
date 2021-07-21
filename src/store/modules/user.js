@@ -45,6 +45,9 @@ const actions = {
         const token = response.accessToken;
         commit('SET_TOKEN', token)
         commit('SET_NAME', username.trim())
+        // debugger
+        // state.settings.sidebarLogo = true;
+        // debugger
         setToken(token)
         setState(state)
         resolve()
@@ -81,7 +84,9 @@ const actions = {
         if (!data) {
           reject('验证失败,请重新登陆')
         }
-        commit('SET_ROLES', ['admin'])
+        const roles = data.userType == 0 ? ['admin'] : ['editor'];
+
+        commit('SET_ROLES', roles)
         // commit('SET_NAME', name)
         commit('SET_AVATAR', data.headImgUrl)
         commit('SET_INTRODUCTION', '1')
@@ -89,8 +94,10 @@ const actions = {
 
         setState(state)
 
+        resetRouter();
+
         const resolveData = {
-          roles: ['admin'],
+          roles: roles,
           introduction: '1',
           avatar: data.headImgUrl,
           name: state.name

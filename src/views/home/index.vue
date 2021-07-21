@@ -3,7 +3,7 @@
       <div class="top-container">
         <div class="info-one">
           <div class="info-one-container info-flow">
-            <div class="info-title">人流量(次)</div>
+            <div class="info-title" style="padding-left: 10px;">人流量(次)</div>
             <div class="info-info info-total">{{ reportInfo.totalFlow.total }}</div>
             <div class="info-info info-detail">
               <div class="detail-info-div">
@@ -15,7 +15,7 @@
                 <span class="info-info-span">{{ reportInfo.totalFlow.totalFemale }}</span> 
               </div>
               <div class="detail-info-div">
-                三
+                第三
                 <span class="info-info-span">{{ reportInfo.totalFlow.totalThree }}</span> 
               </div>
             </div>
@@ -23,7 +23,7 @@
         </div>
         <div class="info-one">
           <div class="info-one-container info-squat">
-            <div class="info-title">厕位(次)</div>
+            <div class="info-title" style="padding-left: 10px;">厕位(次)</div>
             <div class="info-info info-total">{{ reportInfo.totalKspUse.total }}</div>
             <div class="info-info info-detail">
               <div class="detail-info-div">
@@ -35,7 +35,7 @@
                 <span class="info-info-span">{{ reportInfo.totalKspUse.totalFemale }}</span> 
               </div>
               <div class="detail-info-div">
-                三
+                第三
                 <span class="info-info-span">{{ reportInfo.totalKspUse.totalThree }}</span> 
               </div>
             </div>
@@ -43,7 +43,7 @@
         </div>
         <div class="info-one">
           <div class="info-one-container info-energy">
-            <div class="info-title">水电</div>
+            <div class="info-title" style="padding-left: 10px;">水电</div>
             <div class="info-detail-energy">
               <div class="info-detail-energy-one">
                 <div class="info-energy-title">用水量</div>
@@ -58,7 +58,7 @@
         </div>
         <div class="info-one">
           <div class="info-one-container info-warn">
-            <div class="info-title">告警(次)</div>
+            <div class="info-title" style="padding-left: 10px;">告警(次)</div>
             <div class="info-info info-total">{{ reportInfo.totalAlarm.total }}</div>
             <div class="info-info info-detail">
               <div class="detail-info-div">
@@ -207,7 +207,7 @@
                 }
               });
 
-              qq.maps.event.addListener(map, "click", function (event) {
+              qq.maps.event.addListener(map, "click", (event) => {
                 this.longitude = event.latLng.getLat();
                 this.latitude = event.latLng.getLng();
                 console.log(event);
@@ -223,6 +223,15 @@
                   );
 
                   infoWin.setPosition(event.latLng);
+
+                  debugger
+
+                  this.$router.push({
+                    path: '/control/toiletCenter',
+                    query: {
+                      tioletSn: 'M000989'
+                    }
+                  })
 
                 }, 200);
               });
@@ -270,8 +279,18 @@
             initMarker(markerInfo) {
               var marker = new qq.maps.Marker({
                 position: this.getLatLng(markerInfo.latitude, markerInfo.longitude),
-                map: this.map
+                map: this.map,
+                title: markerInfo.toiletName,
+                sn: markerInfo.toiletCode
               });
+              qq.maps.event.addListener(marker, 'click', event => {
+                  this.$router.push({
+                    path: '/control/toiletCenter',
+                    query: {
+                      tioletSn: event.target.sn
+                    }
+                  })
+              })
               this.markers.push(marker);
             },
             getBounds(markerInfos) {
@@ -385,7 +404,8 @@
                         {
                             name: '访问来源',
                             type: 'pie',
-                            radius: '50%',
+                            radius: '80%',
+                            hoverAnimation: false,
                             label: {
                                 show: false,
                             },

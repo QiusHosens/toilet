@@ -324,10 +324,10 @@ export default {
 
   .show-screenfull-div {
     position: absolute;
-    right: 10px;
-    bottom: 10px;
-    width: 16px;
-    height: 16px;
+    left: 10px;
+    top: 10px;
+    width: 32px;
+    height: 100%;
   }
 
   .warn-list-wrap {

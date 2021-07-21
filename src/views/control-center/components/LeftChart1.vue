@@ -57,10 +57,11 @@
             }
           }
 
-          this.option = this.getOptions(xAxis, manDatas, womanDatas, thirdDatas);
+          this.option = this.getOptions(xAxis, manDatas, womanDatas, thirdDatas, max);
         });
       },
       getOptions(xAxis, manDatas, womanDatas, thirdDatas, max) {
+        const leftGrid = (max.toString().length * 4) + '%';
         return {
           legend: {
             data: [
@@ -144,7 +145,10 @@
                 fill: '#FFFFFF'
               }
             }
-          ]
+          ],
+          grid: {
+              left: leftGrid
+          }
         };
       }
     }
