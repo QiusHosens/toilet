@@ -7,7 +7,8 @@
                 v-model="selectedToilets"
                 filterable
                 style="margin-left: 20px;"
-                placeholder="请选择厕所">
+                placeholder="请选择厕所"
+                @change="changeToilet">
                 <el-option
                     v-for="item in toilets"
                     :key="item.toiletCode"
@@ -372,12 +373,7 @@ export default {
                     this.selectedToilets = this.toilets[0].toiletCode;
                 }
                 
-                // this.getDistStatus();
-                this.getSingleToiletKspUse();
-                this.getSingleToiletKspEnv();
-                this.getSingleToiletConsum();
-                this.getSingleToiletWaterAndElec();
-                this.getSingleToiletEvaluate();
+                this.changeToilet(this.selectedToilets);
             }
         });
 
@@ -391,6 +387,14 @@ export default {
                     callback();
                 }
             });
+        },
+        changeToilet(toiletCode) {
+            this.selectedToilets = toiletCode;
+            this.getSingleToiletKspUse();
+            this.getSingleToiletKspEnv();
+            this.getSingleToiletConsum();
+            this.getSingleToiletWaterAndElec();
+            this.getSingleToiletEvaluate();
         },
         getDistStatus() {
             console.log(this.$refs.manContainer);
@@ -432,8 +436,8 @@ export default {
                 let womanCount = womanToilet.length;
                 let maxCount = Math.max(manCount, womanCount);
                 let per1 = Math.sqrt(totalWidth * totalHeight / maxCount);
-                let row = totalHeight % per1 == 0 ? totalHeight / per1 : Math.floor(totalHeight / per1);
-                let column = totalWidth % per1 == 0 ? totalWidth / per1 : Math.floor(totalWidth / per1);
+                let row = totalHeight % per1 == 0 ? totalHeight / per1 : Math.ceil(totalHeight / per1);
+                let column = totalWidth % per1 == 0 ? totalWidth / per1 : Math.ceil(totalWidth / per1);
                 while (row * column < maxCount) {
                     if (totalHeight / row > totalWidth / column) {
                         row ++;

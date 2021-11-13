@@ -1,14 +1,5 @@
 import request from '@/utils/request'
 
-// 获取所有厕所评价
-export function getStatEva(toiletId) {
-  return request({
-    url: '/Api/DataShow/GetStatEva',
-    method: 'get',
-    params: { toiletId }
-  })
-}
-
 // 获取单厕所蹲位信息
 export function getSingleToiletKspUse(tioletSn) {
     return request({
